@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Checkers Game</title>
+
+    <meta http-equiv="content-type" content="text/html; charset=ISO-8859-1">
+
+    <!-- Based on Given Code from Practical Classes -->
+    
+    <!--
+
+    The simple vertex and fragment shaders.
+
+    Using a vertex coordinate buffer and a vertex colour buffer.
+
+    Passing the Model-View Matrix and the Projection Matrix. 
+
+    -->
+
+    <script id="shader-vs" type="x-shader/x-vertex">
+        
+        attribute vec3 aVertexPosition;
+
+        attribute vec3 aVertexColor;
+        
+        uniform mat4 uMVMatrix;
+
+        uniform mat4 uPMatrix;
+
+        varying vec4 vertexColor;
+        
+        void main(void) {
+            
+            // To allow seeing the points drawn
+            
+            gl_PointSize = 5.0;
+            
+            // Just converting the (x,y,z) vertices to Homogeneous Coord.
+            
+            // And multiplying by the Projection and the Model-View matrix
+            
+            gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
+            
+            // Converting the RGB color value to RGBA
+            
+            vertexColor = vec4(aVertexColor, 1.0);
+        }
+    </script>
+
+    <script id="shader-fs" type="x-shader/x-fragment">
+
+        precision mediump float;
+        
+        varying vec4 vertexColor;
+        
+        void main(void) {
+            
+            // Using the passed vertex color
+            
+            gl_FragColor = vertexColor;
+        }
+
+    </script>
+
+    <!-- The JS files -->
+
+    <!-- Some useful functions for browser compatibility -->
+
+    <script type="text/javascript" src="Utils/webgl-utils.js"></script>
+
+    <!-- Handling vectors and matrices -->
+    <script type="text/javascript" src="Utils/maths.js"></script>
+
+    <!-- WebGL code -->
+    <script type="text/javascript" src="Utils/initShaders.js"></script>
+    <script type="text/javascript" src="Main.js"></script>
+    <script type="text/javascript" src="EventHandlers.js"></script>
+
+    <!-- Project Code -->
+    <script type="text/javascript" src="Board.js"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+</head>
+
+
+<body onload="runWebGL();">
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample08" aria-controls="navbarsExample08" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse justify-content-md-center" id="navbarsExample08">
+          <ul class="navbar-nav">
+            <li class="nav-item active">
+              <a class="nav-link" >Checkers Game</span></a>
+            </li>
+            <!-- <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="dropdown08" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+              <div class="dropdown-menu" aria-labelledby="dropdown08">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+                <a class="dropdown-item" href="#">Something else here</a>
+              </div>
+            </li> -->
+          </ul>
+        </div>
+      </nav>
+
+    <div style="">
+        <br>
+
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <canvas id="my-canvas" style="border:1px solid #000000;" width="600" height="600"></canvas>
+                </div>
+                <div class="col-3">
+                    <!-- ################################################### -->
+                    <h4>General</h4>
+                    <p>
+                        <button class="btn btn-danger btn-sm" id="reset-button">Reset</button>
+                    </p>
+
+                    <h5>Move</h5>
+                    <p>
+                        <button class="btn btn-info btn-sm" id="move-left-button">Left</button>
+                        <button class="btn btn-info btn-sm" id="move-right-button">Right</button>
+                        <button class="btn btn-info btn-sm" id="move-up-button">Up</button>
+                        <button class="btn btn-info btn-sm" id="move-down-button">Down</button>
+                        <button class="btn btn-info btn-sm" id="move-front-button">Front</button>
+                        <button class="btn btn-info btn-sm" id="move-back-button">Back</button>
+                    </p>
+                    
+                    <h5>Scale</h5>
+                    <p>
+                        <button class="btn btn-info btn-sm" id="scale-up-button">Scale Up</button>
+                        <button class="btn btn-info btn-sm" id="scale-down-button">Scale Down</button>
+                    </p>
+                                
+                    <h5>Rotate</h5>
+
+                    <h6>XX</h6>
+                    <p>
+                        <button class="btn btn-danger btn-sm" id="XX-on-off-button">On / Off</button>
+                        <button class="btn btn-dark btn-sm" id="XX-direction-button">Change Direction</button>
+                        <button class="btn btn-dark btn-sm" id="XX-slower-button">Slower</button>
+                        <button class="btn btn-dark btn-sm" id="XX-faster-button">Faster</button>
+                    </p>
+
+                    <h6>YY</h6>
+                    <p>
+                        <button class="btn btn-danger btn-sm" id="YY-on-off-button">On / Off</button>
+
+                        <button class="btn btn-dark btn-sm" id="YY-direction-button">Change Direction</button>
+
+                        <button class="btn btn-dark btn-sm" id="YY-slower-button">Slower</button>
+
+                        <button class="btn btn-dark btn-sm" id="YY-faster-button">Faster</button>
+
+                    </p>
+
+                    <h6>ZZ</h6>
+                    <p>
+
+                        <button class="btn btn-danger btn-sm" id="ZZ-on-off-button">On / Off</button>
+
+                        <button class="btn btn-dark btn-sm" id="ZZ-direction-button">Change Direction</button>
+
+                        <button class="btn btn-dark btn-sm" id="ZZ-slower-button">Slower</button>
+
+                        <button class="btn btn-dark btn-sm" id="ZZ-faster-button">Faster</button>
+                    </p>
+                </div>
+                
+                <!-- ################################################### -->
+                <div class="col">
+                    <h4>Pieces</h4>
+                    <h5>Texture</h5>
+                    <p>
+                        <select class="custom-select" id="texture-selection">
+                            <option value="0">Orthogonal Projection</option>
+                            <option value="1">Perspective Projection</option>
+                        </select>
+                    </p>
+
+                    <h5>Shape</h5>
+                    <p>
+                        <select class="custom-select" id="shape-selection">
+                            <option value="0">Orthogonal Projection</option>
+                            <option value="1">Perspective Projection</option>
+                        </select>
+                    </p>
+
+                    <h4>Settings</h4>
+
+                    <h5>Rendering Mode</h5>
+                    <p>
+                        <select class="custom-select" id="rendering-mode-selection">
+                            <option value="0">Filled Triangles</option>
+                            <option value="1">Wireframe</option>
+                            <option value="2">Vertices</option>
+                        </select>
+                    </p>
+
+                    <h5>Projection type</h5>
+                    <p>
+                        <select class="custom-select" id="projection-selection">
+                            <option value="0">Orthogonal Projection</option>
+                            <option value="1">Perspective Projection</option>
+                        </select>
+                    </p>
+                </div> 
+                </div>
+            </div>
+          </div>
+    </div>
+</body>
+
+</html>
