@@ -1,6 +1,6 @@
 class Board {
 
-	constructor(boardS, boardH, slotS, slotH, margin=0.001) {
+	constructor(boardS=10.0, boardH=1.5, slotS=1.0, slotH=0.2, margin=0.001) {
 		if(boardS<8*slotS || boardH<slotH) {
 			// ALERT SIZE ERROR
 		}
