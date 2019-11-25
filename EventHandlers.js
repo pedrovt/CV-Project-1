@@ -86,6 +86,33 @@ function setEventListeners( canvas ){
         }
     });
 
+    var rendering = document.getElementById("rendering-mode-selection");
+
+    rendering.addEventListener("click", function () {
+
+        // Getting the selection
+
+        var r = rendering.selectedIndex;
+
+        switch (r) {
+
+            case 0 :
+                primitiveType = gl.TRIANGLES;
+                break;
+
+            case 1 :
+                primitiveType = gl.LINE_LOOP;
+                break;
+
+            case 2 :
+                primitiveType = gl.POINTS;
+                break;
+        }
+
+        // Rendering
+        drawScene();
+    });
+
 
     // Button events
 
