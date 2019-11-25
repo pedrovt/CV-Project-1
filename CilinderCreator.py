@@ -43,7 +43,7 @@ verticesArray.append(0)
 print('this.vertices = [')
 for i in range(int(len(verticesArray)/3)):
 	index = i*3
-	print('r*'+str(verticesArray[index])+', '+str(verticesArray[index+1])+', '+'r*'+str(verticesArray[index+2])+',')
+	print('x+r*'+str(verticesArray[index])+', y+'+str(verticesArray[index+1])+', z+r*'+str(verticesArray[index+2])+',')
 print(']')
 
 print('\n\nthis.vertexIndices = [')
