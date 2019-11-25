@@ -50,9 +50,9 @@ class Board {
 							-boardS/2,	-margin,		-boardS/2,
 							-boardS/2,	-margin,		boardS/2,
 							boardS/2,	-margin-boardH,	-boardS/2,
-							boardS/2,	-margin-boardH,	boardS/2];
+							boardS/2,	-margin-boardH,	boardS/2,
 							boardS/2,	-margin,		-boardS/2,
-							boardS/2,	-margin,		boardS/2,
+							boardS/2,	-margin,		boardS/2];
 		// Index logic:
 		//	--,-+,++
 		//	++,+-,--
