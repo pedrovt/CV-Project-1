@@ -154,7 +154,7 @@ function initBuffersSlots() {
 
 			// Coordinates
 			var vertices = slot.getVertices();
-			var slotVertexIndices = slot.getVerticesIndices();
+			var slotVertexIndices = slot.getVerticesIndexes();
 
 			var slotVertexPositionBuffer = gl.createBuffer();
 			gl.bindBuffer(gl.ARRAY_BUFFER, slotVertexPositionBuffer);
@@ -183,7 +183,7 @@ function initBuffersSlots() {
 }
 
 function initBuffersDraughts() {
-	for (var i = 0; i < i < Math.sqrt(draughts.length); i++) {			// For each line
+	for (var i = 0; i < Math.sqrt(draughts.length); i++) {			// For each line
 		var line = draughts[i];
 
 		for (var j = 0; j < line.length; j++) {							// For each column
@@ -192,7 +192,7 @@ function initBuffersDraughts() {
 
 			// Coordinates
 			var vertices = draught.getVertices();
-			var draughtVertexIndices = draught.getVerticesIndices();
+			var draughtVertexIndices = draught.getVerticesIndexes();
 
 			var draughtVertexPositionBuffer = gl.createBuffer();
 			gl.bindBuffer(gl.ARRAY_BUFFER, draughtVertexPositionBuffer);
@@ -217,6 +217,9 @@ function initBuffersDraughts() {
 			draughtsVertexPositionBuffer.push(draughtVertexPositionBuffer);
 			draughtsVertexIndexBuffer.push(draughtVertexIndexBuffer);
 		}
+
+		console.log(draughtsVertexPositionBuffer[0]);
+		console.log(draughtsVertexIndexBuffer[0]);
 	}
 }
 

@@ -26,7 +26,7 @@ class Board {
 			}
 			colorBool = !colorBool;
 			x++;
-			y = baseVal;
+			z = baseVal;
 		}
 
 		// Draugths
@@ -37,11 +37,11 @@ class Board {
 											[1,6],[3,6],[5,6],[7,6],
 											[0,5],[2,5],[4,5],[6,5] ];
 		this.draughts = new Array(48);
-		for (var i = 0; i < len(blackTeamStartPositions); i++) {
-			draughts[i] = new Draught(false,this.slots[[0][1]].getCoords()[0],this.slots[[0][1]].getCoords()[1],this.slots[[0][1]].getCoords()[2]);
+		for (var i = 0; i < blackTeamStartPositions.length; i++) {
+			this.draughts[i] = new Draught(false,this.slots[0][1].getCoords()[0],this.slots[0][1].getCoords()[1],this.slots[0][1].getCoords()[2]);
 		}
-		for (var i = len(blackTeamStartPositions); i < len(blackTeamStartPositions)+len(whiteTeamStartPositions); i++) {
-			draughts[i] = new Draught(true,this.slots[[0][1]].getCoords()[0],this.slots[[0][1]].getCoords()[1],this.slots[[0][1]].getCoords()[2]);
+		for (var i = blackTeamStartPositions.length; i < blackTeamStartPositions.length + whiteTeamStartPositions.length; i++) {
+            this.draughts[i] = new Draught(true,this.slots[0][1].getCoords()[0],this.slots[0][1].getCoords()[1],this.slots[0][1].getCoords()[2]);
 		}
 
 
@@ -104,11 +104,11 @@ class Board {
 	}
 
 	getNumberOfDraughts() {
-		return len(this.draughts);
+		return this.draughts.length;
 	}
 
 	getNumberOfSlots() {
-		return len(this.slots);
+		return this.slots.length * this.slots[0].length;
 	}
 }
 
