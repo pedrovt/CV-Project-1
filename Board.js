@@ -45,23 +45,23 @@ class Board {
 		}
 
 
-		this.vertices = [	-boardS/2,	-margin,		-boardS/2,
-							-boardS/2,	-margin,		boardS/2,
-							boardS/2,	-margin,		boardS/2,
-							boardS/2,	-margin,		-boardS/2,
-							-boardS/2,	-margin-boardH,	-boardS/2,
+		this.vertices = [	-boardS/2,	-margin-boardH,	-boardS/2,
 							-boardS/2,	-margin-boardH,	boardS/2,
-							boardS/2,	-margin-boardH,	boardS/2,
-							boardS/2,	-margin-boardH,	-boardS/2];
+							-boardS/2,	-margin,		-boardS/2,
+							-boardS/2,	-margin,		boardS/2,
+							boardS/2,	-margin-boardH,	-boardS/2,
+							boardS/2,	-margin-boardH,	boardS/2];
+							boardS/2,	-margin,		-boardS/2,
+							boardS/2,	-margin,		boardS/2,
 		// Index logic:
 		//	--,-+,++
 		//	++,+-,--
-		this.vertexIndices = [	5,1,2,	2,6,5,	// Front	(1, 2, 5, 6)
-								4,0,3,	3,7,4,	// Back		(0, 3, 4, 7)
-								2,0,1,	1,3,2,	// Top		(0, 1, 2, 3)
-								6,4,5,	5,7,6,	// Bottom	(4, 5, 6, 7)
-								6,2,3,	3,7,6,	// Right	(2, 3, 6, 7)
-								4,0,1,	1,5,4];	// Left		(0, 1, 4, 5)
+		this.vertexIndices = [	1,5,7,	1,7,3,	// Front	(1, 3, 5, 7)
+								2,6,4,	0,2,4,	// Back		(0, 2, 4, 6)
+								3,7,6,	2,3,6,	// Top		(2, 3, 6, 7)
+								0,4,5,	0,5,1,	// Bottom	(0, 1, 4, 5)
+								4,6,5,	5,6,7,	// Right	(4, 5, 6, 7)
+								0,1,3,	0,3,2];	// Left		(0, 1, 2, 3)
 	}
 
 	setMaterial(material) {
