@@ -72,6 +72,12 @@ class Board {
 								0,4,5,	0,5,1,	// Bottom	(0, 1, 4, 5)
 								4,6,5,	5,6,7,	// Right	(4, 5, 6, 7)
 								0,1,3,	0,3,2];	// Left		(0, 1, 2, 3)
+
+		this.colors = [];
+		var length = this.vertices.length;
+		for (var i = 0; i < length; i++) {
+			this.colors.push( 0.10 );
+		}
 	}
 
 	setMaterial(material) {
@@ -120,6 +126,10 @@ class Board {
 	getNumberOfSlots() {
 		return this.slots.length * this.slots[0].length;
 	}
+
+	getColors() {
+		return this.colors;
+	}
 }
 
 class Slot {
@@ -148,6 +158,20 @@ class Slot {
 								0,4,5,	0,5,1,	// Bottom	(0, 1, 4, 5)
 								4,6,5,	5,6,7,	// Right	(4, 5, 6, 7)
 								0,1,3,	0,3,2];	// Left		(0, 1, 2, 3)
+
+		this.colors = [];
+		if (color) {
+			var length = this.vertices.length;
+			for (var i = 0; i < length; i++) {
+				this.colors.push( 0.25 );
+			}
+		}
+		else {
+			var length = this.vertices.length;
+			for (var i = 0; i < length; i++) {
+				this.colors.push( 0.75 );
+			}
+		}
 	}
 
 	getCoords() {
@@ -164,6 +188,10 @@ class Slot {
 
 	getVerticesIndexes() {
 		return this.vertexIndices;
+	}
+
+	getColors() {
+		return this.colors;
 	}
 }
 
@@ -1713,9 +1741,20 @@ class Draught {
 			510, 0, 1,
 		];
 
+		this.colors = [];
 
-
-
+		if (team) {	// Team 1, color white
+			var length = this.vertices.length;
+			for (var i = 0; i < length; i++) {
+				this.colors.push( 0.50 );
+			}
+		}
+		else {
+			var length = this.vertices.length;
+			for (var i = 0; i < length; i++) {
+				this.colors.push( 0.00 );
+			}
+		}
 	}
 
 	getCoords() {
@@ -1732,6 +1771,10 @@ class Draught {
 
 	getVerticesIndexes() {
 		return this.vertexIndices;
+	}
+
+	getColors() {
+		return this.colors;
 	}
 }
 

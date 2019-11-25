@@ -72,8 +72,12 @@ function initShaders( gl ) {
 
 	// NEW --- Texture coordinates
 	
-    shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-    gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+    //shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+    //gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
+
+	// Colors
+	shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
+	gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
 
 	// NEW --- The matrices
 	 

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html xmlns="http://www.w3.org/1999/html">
 
 <head>
 
@@ -79,6 +79,7 @@
 
     <!-- WebGL code -->
     <script type="text/javascript" src="Utils/initShaders.js"></script>
+    <script type="text/javascript" src="Textures.js"></script>
     <script type="text/javascript" src="Main.js"></script>
     <script type="text/javascript" src="EventHandlers.js"></script>
 
@@ -190,41 +191,45 @@
                 
                 <!-- ################################################### -->
                 <div class="col">
-                    <h4>Pieces</h4>
-                    <h5>Texture</h5>
-                    <p>
-                        <select class="custom-select" id="texture-selection">
-                            <option value="0">Orthogonal Projection</option>
-                            <option value="1">Perspective Projection</option>
-                        </select>
-                    </p>
+                    <div hidden>
+                        <h4>Pieces</h4>
+                        <h5>Texture</h5>
+                        <p>
+                            <select class="custom-select" id="texture-selection">
+                                <option value="0">Orthogonal Projection</option>
+                                <option value="1">Perspective Projection</option>
+                            </select>
+                        </p>
 
-                    <h5>Shape</h5>
-                    <p>
-                        <select class="custom-select" id="shape-selection">
-                            <option value="0">Orthogonal Projection</option>
-                            <option value="1">Perspective Projection</option>
-                        </select>
-                    </p>
+                        <h5 >Shape</h5>
+                        <p>
+                            <select class="custom-select" id="shape-selection">
+                                <option value="0">Orthogonal Projection</option>
+                                <option value="1">Perspective Projection</option>
+                            </select>
+                        </p>
+                    </div>
 
-                    <h4>Settings</h4>
+                    <div>
+                        <h4>Settings</h4>
 
-                    <h5>Rendering Mode</h5>
-                    <p>
-                        <select class="custom-select" id="rendering-mode-selection">
-                            <option value="0">Filled Triangles</option>
-                            <option value="1">Wireframe</option>
-                            <option value="2">Vertices</option>
-                        </select>
-                    </p>
+                        <h5 hidden>Rendering Mode</h5>
+                        <p>
+                            <select hidden class="custom-select" id="rendering-mode-selection">
+                                <option value="0">Filled Triangles</option>
+                                <option value="1">Wireframe</option>
+                                <option value="2">Vertices</option>
+                            </select>
+                        </p>
 
-                    <h5>Projection type</h5>
-                    <p>
-                        <select class="custom-select" id="projection-selection">
-                            <option value="0">Orthogonal Projection</option>
-                            <option value="1">Perspective Projection</option>
-                        </select>
-                    </p>
+                        <h5>Projection type</h5>
+                        <p>
+                            <select class="custom-select" id="projection-selection">
+                                <option value="0">Orthogonal Projection</option>
+                                <option value="1" selected>Perspective Projection</option>
+                            </select>
+                        </p>
+                    </div>
                 </div> 
                 </div>
             </div>

@@ -22,17 +22,17 @@ var slots 	 = board.getSlots();
 var draughts = board.getDraughts();
 
 // Buffers #############################################################################################################
-var boardVertexPositionBuffer = null;											// Board
+var boardVertexPositionBuffer = null;		// Board
 var boardVertexIndexBuffer = null;
-var boardVertexTextureCoordBuffer;
+var boardVertexColorBuffer = null;
 
 var slotsVertexPositionBuffer = [];			// Slots
 var slotsVertexIndexBuffer =  [];
-var slotsVertexTextureCoordBuffer;
+var slotsVertexColorBuffer = [];
 
 var draughtsVertexPositionBuffer = [];		// Draughts
 var draughtsVertexIndexBuffer = [];
-var draughtsVertexTextureCoordBuffer;
+var draughtsVertexColorBuffer = [];
 
 // The global transformation parameters ################################################################################
 
@@ -42,30 +42,30 @@ var ty = 0.0;
 var tz = 0.0;
 
 // The rotation angles in degrees
-var angleXX = 0.0;
+var angleXX = 40;
 var angleYY = 0.0;
 var angleZZ = 0.0;
 
 // The scaling factors
-var sx = 0.25;
-var sy = 0.25;
-var sz = 0.25;
+var sx = 0.13;
+var sy = 0.13;
+var sz = 0.13;
 
 // Animation controls
-var rotationXX_ON = 1;
+var rotationXX_ON = 0;
 var rotationXX_DIR = 1;
 var rotationXX_SPEED = 1;
 
-var rotationYY_ON = 1;
+var rotationYY_ON = 0;
 var rotationYY_DIR = 1;
 var rotationYY_SPEED = 1;
  
-var rotationZZ_ON = 1;
+var rotationZZ_ON = 0;
 var rotationZZ_DIR = 1;
 var rotationZZ_SPEED = 1;
 
 var primitiveType = null;	// To allow choosing the way of drawing the model triangles
-var projectionType = 0;		// To allow choosing the projection type
+var projectionType = 1;		// To allow choosing the projection type
 
 // Local Transformations ###############################################################################################
 
@@ -81,36 +81,6 @@ var projectionType = 0;		// To allow choosing the projection type
 //  Rendering
 //
 
-// Handling the Textures
-
-// From www.learningwebgl.com
-
-function handleLoadedTexture(texture) {
-
-	gl.bindTexture(gl.TEXTURE_2D, texture);
-	gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
-	gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-	gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-	gl.bindTexture(gl.TEXTURE_2D, null);
-}
-
-
-var webGLTexture;
-
-function initTexture() {
-	
-	webGLTexture = gl.createTexture();
-	webGLTexture.image = new Image();
-	webGLTexture.image.onload = function () {
-		handleLoadedTexture(webGLTexture);
-	};
-
-	webGLTexture.image.src = "rotate.jpg";
-}
-
-//----------------------------------------------------------------------------
-
 // Handling the Buffers
 function initBuffers() {
 	initBuffersBoard();
@@ -121,6 +91,7 @@ function initBuffers() {
 function initBuffersBoard() {
 	// Coordinates
 	var vertices = board.getVertices();
+	var colors = board.getColors();
 	var boardVertexIndices = board.getVerticesIndexes();
 
 	boardVertexPositionBuffer = gl.createBuffer();
@@ -135,6 +106,13 @@ function initBuffersBoard() {
 	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
 	boardVertexTextureCoordBuffer.itemSize = 2;
 	boardVertexTextureCoordBuffer.numItems = 24;*/
+
+	// Colors
+	boardVertexColorBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexColorBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+	boardVertexColorBuffer.itemSize = 3;
+	boardVertexColorBuffer.numItems = vertices.length / 3;
 
 	// Vertex indices
 	boardVertexIndexBuffer = gl.createBuffer();
@@ -154,6 +132,7 @@ function initBuffersSlots() {
 
 			// Coordinates
 			var vertices = slot.getVertices();
+			var colors = slot.getColors();
 			var slotVertexIndices = slot.getVerticesIndexes();
 
 			var slotVertexPositionBuffer = gl.createBuffer();
@@ -169,6 +148,13 @@ function initBuffersSlots() {
             boardVertexTextureCoordBuffer.itemSize = 2;
             boardVertexTextureCoordBuffer.numItems = 24;*/
 
+            // Colors
+            var slotVertexColorBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, slotVertexColorBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+            slotVertexColorBuffer.itemSize = 3;
+            slotVertexColorBuffer.numItems = vertices.length / 3;
+
 			// Vertex indices
 			var slotVertexIndexBuffer = gl.createBuffer();
 			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, slotVertexIndexBuffer);
@@ -177,6 +163,7 @@ function initBuffersSlots() {
 			slotVertexIndexBuffer.numItems = 36;
 
 			slotsVertexPositionBuffer.push(slotVertexPositionBuffer);
+            slotsVertexColorBuffer.push(slotVertexColorBuffer);
 			slotsVertexIndexBuffer.push(slotVertexIndexBuffer);
 		}
 	}
@@ -190,6 +177,7 @@ function initBuffersDraughts() {
 
 		// Coordinates
 		var vertices = draught.getVertices();
+		var colors = draught.getColors();
 		var draughtVertexIndices = draught.getVerticesIndexes();
 
 		var draughtVertexPositionBuffer = gl.createBuffer();
@@ -205,7 +193,14 @@ function initBuffersDraughts() {
 		boardVertexTextureCoordBuffer.itemSize = 2;
 		boardVertexTextureCoordBuffer.numItems = 24;*/
 
-		// Vertex indices
+		// Colors
+        var draughtVertexColorBuffer = gl.createBuffer();
+        gl.bindBuffer(gl.ARRAY_BUFFER, draughtVertexColorBuffer);
+        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+        draughtVertexColorBuffer.itemSize = 3;
+        draughtVertexColorBuffer.numItems = vertices.length / 3;
+
+        // Vertex indices
 		var draughtVertexIndexBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, draughtVertexIndexBuffer);
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(draughtVertexIndices), gl.STATIC_DRAW);
@@ -213,16 +208,15 @@ function initBuffersDraughts() {
 		draughtVertexIndexBuffer.numItems = 3072;
 
 		draughtsVertexPositionBuffer.push(draughtVertexPositionBuffer);
+        draughtsVertexColorBuffer.push(draughtVertexColorBuffer);
 		draughtsVertexIndexBuffer.push(draughtVertexIndexBuffer);
 	}
 }
-
-
 //----------------------------------------------------------------------------
 
 // Drawing the model
 function drawModel( modelVertexPositionBuffer,
-					modelVertexTextureCoordBuffer,
+                    modelVertexColorBuffer,
 					modelVertexIndexBuffer,
 					angleXX, angleYY, angleZZ,
 					sx, sy, sz,
@@ -255,6 +249,11 @@ function drawModel( modelVertexPositionBuffer,
         
     gl.uniform1i(shaderProgram.samplerUniform, 0);
     */
+
+	// Colors
+    gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexColorBuffer);
+    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, modelVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
     // The vertex indices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);
 
@@ -295,23 +294,22 @@ function drawScene() {
 	var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
 	gl.uniformMatrix4fv(pUniform, false, new Float32Array(flatten(pMatrix)));
 	
-	// Instatiating the models
+	// Instantiating the models
 
-	// Board Models
-	/*
+	// Board Model
 	drawModel( boardVertexPositionBuffer,
-		       boardVertexTextureCoordBuffer,
+		       boardVertexColorBuffer,
 		       boardVertexIndexBuffer,
 		       angleXX, angleYY, angleZZ,
 	           sx, sy, sz,
 	           tx, ty, tz,
 	           mvMatrix,
 	           primitiveType );
-	*/
+
 	// Slots Models
-	/* for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
+	for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
 		drawModel(  slotsVertexPositionBuffer[i],
-					null,
+					slotsVertexColorBuffer[i],
 					slotsVertexIndexBuffer[i],
 					angleXX, angleYY, angleZZ,
 					sx, sy, sz,
@@ -319,11 +317,11 @@ function drawScene() {
 					mvMatrix,
 					primitiveType );
 	}
-	*/
+
 	// Draughts Models
 	for (var j = 0; j < draughtsVertexPositionBuffer.length; j++) {
 		drawModel(  draughtsVertexPositionBuffer[j],
-					null,
+                    draughtsVertexColorBuffer[j],
 					draughtsVertexIndexBuffer[j],
 					angleXX, angleYY, angleZZ,
 					sx, sy, sz,
