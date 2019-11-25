@@ -360,40 +360,20 @@ function drawScene() {
 	
 	// Call the drawModel function !!
 	
-	// Instance 1 --- RIGHT TOP
+
 
 	// TODO connect this with Board
 
-	drawModel( -angleXX, angleYY, angleZZ, 
+	// Board Models
+	drawModel( angleXX, angleYY, angleZZ,
 	           sx, sy, sz,
-	           tx + 0.5, ty + 0.5, tz,
+	           tx, ty, tz,
 	           mvMatrix,
-	           window.primitiveType );
-	           	       
-	// Instance 2 --- LEFT TOP
-	
-	drawModel( -angleXX, -angleYY, -angleZZ,  // CW rotations
-	           sx, sy, sz,
-	           tx - 0.5, ty + 0.5, tz,
-	           mvMatrix,
-	           window.primitiveType );
-	           
-	// Instance 3 --- LEFT BOTTOM
-	
-	drawModel( angleXX, angleYY, -angleZZ, 
-	           sx, sy, sz,
-	           tx + 0.5, ty - 0.5, tz,
-	           mvMatrix,
-	           window.primitiveType );
-	           	       
-	// Instance 4 --- RIGHT BOTTOM
-	
-	drawModel( angleXX, -angleYY, angleZZ,  // CW rotations
-	           sx, sy, sz,
-	           tx - 0.5, ty - 0.5, tz,
-	           mvMatrix,
-	           window.primitiveType );
-	           
+	           primitiveType );
+
+	// Piece Models
+
+
 }
 
 //----------------------------------------------------------------------------
@@ -408,7 +388,8 @@ function animate() {
 	if( lastTime != 0 ) {
 		
 		var elapsed = timeNow - lastTime;
-		
+
+		// All rotations are
 		if( rotationXX_ON ) {
 
 			angleXX += rotationXX_DIR * rotationXX_SPEED * (90 * elapsed) / 1000.0;
@@ -462,12 +443,13 @@ function initWebGL( canvas ) {
 		// Some browsers still need "experimental-webgl"
 		gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
 
-		window.primitiveType = gl.TRIANGLES;
+		primitiveType = gl.TRIANGLES;
 
-		// Enable FACE CULLING
+		// Enable FACE CULLING and DEPTH TEST
 		gl.enable( gl.CULL_FACE );
 		gl.cullFace( gl.BACK );
-		
+		gl.enable( gl.DEPTH_TEST );
+
 	} catch (e) {
 	}
 	if (!gl) {

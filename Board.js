@@ -70,6 +70,10 @@ class Board {
 		}
 		return verticesArray;
 	}
+
+	getSlots() {
+		return this.slots;
+	}
 }
 
 class Slot {
