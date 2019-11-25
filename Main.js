@@ -183,44 +183,38 @@ function initBuffersSlots() {
 }
 
 function initBuffersDraughts() {
-	for (var i = 0; i < Math.sqrt(draughts.length); i++) {			// For each line
-		var line = draughts[i];
+	for (var i = 0; i < Math.sqrt(draughts.length); i++) {
 
-		for (var j = 0; j < line.length; j++) {							// For each column
-			// Slot
-			var draught = line[j];
+		// Slot
+		var draught = draughts[i];
 
-			// Coordinates
-			var vertices = draught.getVertices();
-			var draughtVertexIndices = draught.getVerticesIndexes();
+		// Coordinates
+		var vertices = draught.getVertices();
+		var draughtVertexIndices = draught.getVerticesIndexes();
 
-			var draughtVertexPositionBuffer = gl.createBuffer();
-			gl.bindBuffer(gl.ARRAY_BUFFER, draughtVertexPositionBuffer);
-			gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
-			draughtVertexPositionBuffer.itemSize = 3;
-			draughtVertexPositionBuffer.numItems = vertices.length / 3;
+		var draughtVertexPositionBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, draughtVertexPositionBuffer);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
+		draughtVertexPositionBuffer.itemSize = 3;
+		draughtVertexPositionBuffer.numItems = vertices.length / 3;
 
-			// Textures
-			/*boardVertexTextureCoordBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexTextureCoordBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-            boardVertexTextureCoordBuffer.itemSize = 2;
-            boardVertexTextureCoordBuffer.numItems = 24;*/
+		// Textures
+		/*boardVertexTextureCoordBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexTextureCoordBuffer);
+		gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
+		boardVertexTextureCoordBuffer.itemSize = 2;
+		boardVertexTextureCoordBuffer.numItems = 24;*/
 
-			// Vertex indices
-			var draughtVertexIndexBuffer = gl.createBuffer();
-			gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, draughtVertexIndexBuffer);
-			gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(draughtVertexIndices), gl.STATIC_DRAW);
-			draughtVertexIndexBuffer.itemSize = 1;
-			draughtVertexIndexBuffer.numItems = 36;
+		// Vertex indices
+		var draughtVertexIndexBuffer = gl.createBuffer();
+		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, draughtVertexIndexBuffer);
+		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(draughtVertexIndices), gl.STATIC_DRAW);
+		draughtVertexIndexBuffer.itemSize = 1;
+		draughtVertexIndexBuffer.numItems = 36;
 
-			draughtsVertexPositionBuffer.push(draughtVertexPositionBuffer);
-			draughtsVertexIndexBuffer.push(draughtVertexIndexBuffer);
+		draughtsVertexPositionBuffer.push(draughtVertexPositionBuffer);
+		draughtsVertexIndexBuffer.push(draughtVertexIndexBuffer);
 		}
-
-		console.log(draughtsVertexPositionBuffer[0]);
-		console.log(draughtsVertexIndexBuffer[0]);
-	}
 }
 
 
@@ -253,14 +247,14 @@ function drawModel( modelVertexPositionBuffer,
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, modelVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 	// NEW --- Textures
-	gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexTextureCoordBuffer);
+	/* gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexTextureCoordBuffer);
     gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, modelVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, webGLTexture);
         
     gl.uniform1i(shaderProgram.samplerUniform, 0);
-    
+    */
     // The vertex indices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);
 
@@ -314,7 +308,7 @@ function drawScene() {
 	           primitiveType );
 
 	// Slots Models
-	for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
+	/*for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
 		drawModel(  slotsVertexPositionBuffer[i],
 					slotsVertexTextureCoordBuffer[i],
 					slotsVertexIndexBuffer[i],
@@ -335,7 +329,7 @@ function drawScene() {
 					tx, ty, tz,
 					mvMatrix,
 					primitiveType );
-	}
+	}*/
 }
 
 //----------------------------------------------------------------------------
