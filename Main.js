@@ -183,7 +183,7 @@ function initBuffersSlots() {
 }
 
 function initBuffersDraughts() {
-	for (var i = 0; i < Math.sqrt(draughts.length); i++) {
+	for (var i = 0; i < 24; i++) {
 
 		// Slot
 		var draught = draughts[i];
@@ -210,11 +210,11 @@ function initBuffersDraughts() {
 		gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, draughtVertexIndexBuffer);
 		gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(draughtVertexIndices), gl.STATIC_DRAW);
 		draughtVertexIndexBuffer.itemSize = 1;
-		draughtVertexIndexBuffer.numItems = 36;
+		draughtVertexIndexBuffer.numItems = 3072;
 
 		draughtsVertexPositionBuffer.push(draughtVertexPositionBuffer);
 		draughtsVertexIndexBuffer.push(draughtVertexIndexBuffer);
-		}
+	}
 }
 
 
@@ -309,7 +309,7 @@ function drawScene() {
 	           primitiveType );
 	*/
 	// Slots Models
-	for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
+	/* for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
 		drawModel(  slotsVertexPositionBuffer[i],
 					null,
 					slotsVertexIndexBuffer[i],
@@ -319,9 +319,9 @@ function drawScene() {
 					mvMatrix,
 					primitiveType );
 	}
-	/*
+	*/
 	// Draughts Models
-	for (var j = 0; i < draughtsVertexPositionBuffer.length; j++) {
+	for (var j = 0; j < draughtsVertexPositionBuffer.length; j++) {
 		drawModel(  draughtsVertexPositionBuffer[j],
 					null,
 					draughtsVertexIndexBuffer[j],
@@ -330,7 +330,7 @@ function drawScene() {
 					tx, ty, tz,
 					mvMatrix,
 					primitiveType );
-	}*/
+	}
 }
 
 //----------------------------------------------------------------------------

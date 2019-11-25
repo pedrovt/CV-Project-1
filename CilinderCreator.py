@@ -14,7 +14,8 @@ for i in range(n):
 	verticesArray.append('h')
 	verticesArray.append(sin(arg))
 
-for i in range(2*n):
+for j in range(n):
+	i = 2*j
 	# == Top Triangle ==
 	indicesArray.append((i+1)%(2*n))
 	indicesArray.append((i+3)%(2*n))
