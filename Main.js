@@ -26,12 +26,12 @@ var boardVertexPositionBuffer = null;											// Board
 var boardVertexIndexBuffer = null;
 var boardVertexTextureCoordBuffer;
 
-var slotsVertexPositionBuffer = new Array(board.getNumberOfSlots());			// Slots
-var slotsVertexIndexBuffer =  new Array(board.getNumberOfSlots());
+var slotsVertexPositionBuffer = [];			// Slots
+var slotsVertexIndexBuffer =  [];
 var slotsVertexTextureCoordBuffer;
 
-var draughtsVertexPositionBuffer = new Array(board.getNumberOfDraughts());		// Draughts
-var draughtsVertexIndexBuffer = new Array(board.getNumberOfDraughts());
+var draughtsVertexPositionBuffer = [];		// Draughts
+var draughtsVertexIndexBuffer = [];
 var draughtsVertexTextureCoordBuffer;
 
 // The global transformation parameters ################################################################################
@@ -145,7 +145,7 @@ function initBuffersBoard() {
 }
 
 function initBuffersSlots() {
-	for (var i = 0; i < Math.sqrt(slots.length); i++) {			// For each line (we have 8 x 8 = 8^2 slots)
+	for (var i = 0; i < 8; i++) {			// For each line (we have 8 x 8 = 8^2 slots)
 		var line = slots[i];
 
 		for (var j = 0; j < line.length; j++) {					// For each column
@@ -298,6 +298,7 @@ function drawScene() {
 	// Instatiating the models
 
 	// Board Models
+	/*
 	drawModel( boardVertexPositionBuffer,
 		       boardVertexTextureCoordBuffer,
 		       boardVertexIndexBuffer,
@@ -306,11 +307,11 @@ function drawScene() {
 	           tx, ty, tz,
 	           mvMatrix,
 	           primitiveType );
-
+	*/
 	// Slots Models
-	/*for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
+	for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
 		drawModel(  slotsVertexPositionBuffer[i],
-					slotsVertexTextureCoordBuffer[i],
+					null,
 					slotsVertexIndexBuffer[i],
 					angleXX, angleYY, angleZZ,
 					sx, sy, sz,
@@ -318,11 +319,11 @@ function drawScene() {
 					mvMatrix,
 					primitiveType );
 	}
-
+	/*
 	// Draughts Models
 	for (var j = 0; i < draughtsVertexPositionBuffer.length; j++) {
 		drawModel(  draughtsVertexPositionBuffer[j],
-					draughtsVertexTextureCoordBuffer[j],
+					null,
 					draughtsVertexIndexBuffer[j],
 					angleXX, angleYY, angleZZ,
 					sx, sy, sz,
