@@ -12,6 +12,7 @@ class Board {
 		this.nPhong = materialConstants[9];
 
 		// Slots
+		this.slotDraughtDic = new Array();
 		var baseVal = -3.5*slotS;
 		var x = baseVal;
 		var z = baseVal;
@@ -21,6 +22,7 @@ class Board {
 			this.slots[i] = new Array(8);
 			for (var j = 0; j < this.slots[i].length; j++) {
 				this.slots[i][j] = new Slot(colorBool,x,0,z,slotS,slotH);
+				this.slotDraughtDic[8*i+j] = null;
 				colorBool = !colorBool;
 				z++;
 			}
@@ -28,6 +30,8 @@ class Board {
 			x++;
 			z = baseVal;
 		}
+		this.selectedSlot = [];
+		this.overSlot = null;
 
 		// Draugths
 		const blackTeamStartPositions = [	[1,0],[3,0],[5,0],[7,0],
@@ -44,7 +48,7 @@ class Board {
 			var coords = this.slots[j][k].getCoords();
 
 			this.draughts[i] = new Draught(false,coords[0],coords[1],coords[2]);
-			/* this.draughts[i] = new Draught(false,this.slots[0][1].getCoords()[0],this.slots[0][1].getCoords()[1],this.slots[0][1].getCoords()[2]);*/
+			this.slotDraughtDic[8*j+k] = this.draughts[i];
 		}
 		for (var i = 0; i < whiteTeamStartPositions.length; i++) {
 			var j = whiteTeamStartPositions[i][0];
@@ -52,6 +56,7 @@ class Board {
 			var coords = this.slots[j][k].getCoords();
 
 			this.draughts[i + blackTeamStartPositions.length] = new Draught(true,coords[0],coords[1],coords[2]);
+			this.slotDraughtDic[8*j+k] = this.draughts[i + blackTeamStartPositions.length];
 		}
 
 
@@ -78,6 +83,8 @@ class Board {
 		for (var i = 0; i < length; i++) {
 			this.colors.push( 0.10 );
 		}
+
+		this.currentTeam = true;
 	}
 
 	setMaterial(material) {
@@ -130,6 +137,128 @@ class Board {
 	getColors() {
 		return this.colors;
 	}
+
+	getSelectedSlot() {
+		return this.selectedSlot;
+	}
+
+	getOverSlot() {
+		return this.overSlot;
+	}
+
+	isValidPosition(pos) {
+		return(pos.length==2 && pos[0]>=0 && pos[0]<=7 && pos[1]>=0 && pos[1]<=7);
+	}
+
+	isValidPlay(posI, posF, team) {
+		console.log(posI);
+		console.log(posF);
+		console.log(team);
+		if(posI[0]==posF[0] && posI[1]==posF[1]) {
+			console.log("1");
+			return false;
+		}
+		if(this.isValidPosition(posI) && this.isValidPosition(posF)) {
+			if(this.slotDraughtDic[8*posI[0]+posI[1]].getTeam()==team && this.slotDraughtDic[8*posF[0]+posF[1]]===null) {
+				if(team) {	
+					// Advance
+					if(posF[1]==posI[1]-1) {
+						return(posF[0]==posI[0]-1 || posF[0]==posI[0]+1);
+					}
+					// Capture
+					else if(posF[1]==posI[1]-2) {
+						return(	(posF[0]==posI[0]-2 && this.slotDraughtDic[8*(posI[0]-1)+posI[1]-1].getTeam()==(!team)) ||
+								(posF[0]==posI[0]+2 && this.slotDraughtDic[8*(posI[0]-1)+posI[1]+1].getTeam()==(!team)));
+					}
+					return false;
+				}
+				else {
+					// Advance
+					if(posF[1]==posI[1]+1) {
+						return(posF[0]==posI[0]-1 || posF[0]==posI[0]+1);
+					}
+					// Capture
+					else if(posF[1]==posI[1]+2) {
+						return(	(posF[0]==posI[0]-2 && this.slotDraughtDic[8*(posI[0]+1)+posI[1]-1].getTeam()==(!team)) ||
+								(posF[0]==posI[0]+2 && this.slotDraughtDic[8*(posI[0]+1)+posI[1]+1].getTeam()==(!team)));
+					}
+					return false;
+				}
+			}
+			return false;
+		}
+		return false;
+	}
+
+	play(posI, posF, team) {
+		this.slotDraughtDic[8*posI[0]+posI[1]] = null;
+		this.slotDraughtDic[8*posF[0]+posF[1]] = team;
+		// Capture
+		if(posF[0]==posI[0]-2 || posF[0]==posI[0]+2) {
+			slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2] = null;
+		}
+	}
+
+	moveOverRight() {
+		if(this.overSlot === null) {
+			this.overSlot = [0,0];
+		}
+		else {
+			this.overSlot[0] = (this.overSlot[0]+1)%8;
+		}
+	}
+
+	moveOverLeft() {
+		if(this.overSlot === null) {
+			this.overSlot = [0,0];
+		}
+		else {
+			this.overSlot[0] = (this.overSlot[0]+7)%8;
+		}
+	}
+
+	moveOverDown() {
+		if(this.overSlot === null) {
+			this.overSlot = [0,0];
+		}
+		else {
+			this.overSlot[1] = (this.overSlot[1]+1)%8;
+		}
+	}
+
+	moveOverUp() {
+		if(this.overSlot === null) {
+			this.overSlot = [0,0];
+		}
+		else {
+			this.overSlot[1] = (this.overSlot[1]+7)%8;
+		}
+	}
+
+	selectSlot() {
+		if(this.selectedSlot == 0) {
+			this.selectedSlot = [];
+			this.selectedSlot[0] = this.overSlot[0];
+			this.selectedSlot[1] = this.overSlot[1];
+		}
+		else {
+			if(this.isValidPlay(this.selectedSlot,this.overSlot,this.currentTeam)) {
+				console.log("Valid play");
+				this.play(this.selectedSlot,this.overSlot,this.currentTeam);
+				this.selectedSlot = [];
+			}
+			else {
+				console.log("Invalid play");
+			}
+		}
+
+		
+	}
+
+	deselectSlot() {
+		this.selectedSlot = [];
+	}
+
 }
 
 class Slot {

@@ -15,13 +15,12 @@ function setEventListeners( canvas ){
     // From learningwebgl.com
 
     function handleKeyDown(event) {
-
         currentlyPressedKeys[event.keyCode] = true;
     }
 
     function handleKeyUp(event) {
-
         currentlyPressedKeys[event.keyCode] = false;
+        blocked[event.keyCode] = false;
     }
 
     document.onkeydown = handleKeyDown;
@@ -410,67 +409,78 @@ function handleMouseMove(event) {
 // Adapted from www.learningwebgl.com
 
 var currentlyPressedKeys = {};
+var blocked = {};
+blocked[27] = false;
+blocked[32] = false;
+blocked[37] = false;
+blocked[38] = false;
+blocked[39] = false;
+blocked[40] = false;
+
+function unblock(index) {
+    blocked[index] = false;
+}
 
 function handleKeys() {
-
-    if (currentlyPressedKeys[33]) {
-
-        // Page Up
-
-        sx *= 0.9;
-
-        sz = sy = sx;
-    }
-    if (currentlyPressedKeys[34]) {
-
-        // Page Down
-
-        sx *= 1.1;
-
-        sz = sy = sx;
-    }
+    
+    // Left cursor key
     if (currentlyPressedKeys[37]) {
-
-        // Left cursor key
-
-        if( rotationYY_ON == 0 ) {
-
-            rotationYY_ON = 1;
+        if(!blocked[37]) {
+            blocked[37] = true;
+            board.moveOverLeft();
+            // console.log("LEFT");
+            // console.log(board.overSlot);
+            console.log(board.selectedSlot,board.overSlot);
         }
-
-        rotationYY_SPEED -= 0.25;
     }
+    // Right cursor key
     if (currentlyPressedKeys[39]) {
-
-        // Right cursor key
-
-        if( rotationYY_ON == 0 ) {
-
-            rotationYY_ON = 1;
+        if(!blocked[39]) {
+            blocked[39] = true;
+            board.moveOverRight();
+            // console.log("RIGHT");
+            // console.log(board.overSlot);
+            console.log(board.selectedSlot,board.overSlot);
         }
-
-        rotationYY_SPEED += 0.25;
     }
+    // Up cursor key
     if (currentlyPressedKeys[38]) {
-
-        // Up cursor key
-
-        if( rotationXX_ON == 0 ) {
-
-            rotationXX_ON = 1;
+        if(!blocked[38]) {
+            blocked[38] = true;
+            board.moveOverUp();
+            // console.log("UP");
+            // console.log(board.overSlot);
+            console.log(board.selectedSlot,board.overSlot);
         }
-
-        rotationXX_SPEED -= 0.25;
     }
+    // Down cursor key
     if (currentlyPressedKeys[40]) {
-
-        // Down cursor key
-
-        if( rotationXX_ON == 0 ) {
-
-            rotationXX_ON = 1;
+        if(!blocked[40]) {
+            blocked[40] = true;
+            board.moveOverDown();
+            // console.log("DOWN");
+            // console.log(board.overSlot);
+            console.log(board.selectedSlot,board.overSlot);
         }
-
-        rotationXX_SPEED += 0.25;
+    }
+    // Spacebar key
+    if (currentlyPressedKeys[32]) {
+        if(!blocked[32]) {
+            blocked[32] = true;
+            board.selectSlot();
+            // console.log("SPACEBAR");
+            // console.log(board.overSlot);
+            console.log(board.selectedSlot,board.overSlot);
+        }
+    }
+    // Esc key
+    if (currentlyPressedKeys[27]) {
+        if(!blocked[27]) {
+            blocked[27] = true;
+            board.deselectSlot();
+            // console.log("ESC");
+            // console.log(board.overSlot);
+            console.log(board.selectedSlot,board.overSlot);
+        }
     }
 }
