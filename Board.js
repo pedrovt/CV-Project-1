@@ -191,12 +191,13 @@ class Board {
 	}
 
 	play(posI, posF, team) {
+		this.slotDraughtDic[8*posF[0]+posF[1]] = this.slotDraughtDic[8*posI[0]+posI[1]];
 		this.slotDraughtDic[8*posI[0]+posI[1]] = null;
-		this.slotDraughtDic[8*posF[0]+posF[1]] = team;
 		// Capture
 		if(posF[0]==posI[0]-2 || posF[0]==posI[0]+2) {
-			slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2] = null;
+			this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2] = null;
 		}
+		this.currentTeam = !this.currentTeam;
 	}
 
 	moveOverRight() {
