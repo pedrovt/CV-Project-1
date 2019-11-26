@@ -163,13 +163,13 @@ class Slot {
 		if (color) {
 			var length = this.vertices.length;
 			for (var i = 0; i < length; i++) {
-				this.colors.push( 0.25 );
+				this.colors.push( 0.75 );
 			}
 		}
 		else {
 			var length = this.vertices.length;
 			for (var i = 0; i < length; i++) {
-				this.colors.push( 0.75 );
+				this.colors.push( 0.25 );
 			}
 		}
 	}
