@@ -109,11 +109,11 @@ function drawModel( modelVertexPositionBuffer,
     gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, modelVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 	// NEW --- Textures
-	if (hasTexture) {
+	/*if (hasTexture) {
 		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, webGLTexture);
 		gl.uniform1i(shaderProgram.samplerUniform, 0);
-	}
+	}*/
 
     // The vertex indices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);
@@ -134,7 +134,7 @@ function drawScene() {
 	// Clearing with the background color
 	
 	gl.clear(gl.COLOR_BUFFER_BIT);
-	
+
 	// NEW --- Computing the Projection Matrix
 	if( projectionType == 0 ) {
 		// For now, the default orthogonal view volume
@@ -148,12 +148,12 @@ function drawScene() {
 		pMatrix = perspective( 45, 1, 0.05, 10 );
 		tz = -2.25;
 	}
-	
+
 	// Passing the Projection Matrix to apply the current projection
-	
+
 	var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
 	gl.uniformMatrix4fv(pUniform, false, new Float32Array(flatten(pMatrix)));
-	
+
 	// Instantiating the models
 
 	// Board Model
@@ -187,7 +187,7 @@ function drawScene() {
 					draughtsVertexIndexBuffer[j],
 					angleXX, angleYY, angleZZ,
 					sx, sy, sz,
-					tx + draughtsPositions[j][0], ty + draughtsPositions[j][1], tz,
+					tx + draughtsPositions[j][0], ty + draughtsPositions[j][1], tz,		// if tz + draughtsPositions[j][2] instead of tz, piece disappears
 					mvMatrix,
 					primitiveType,
 					true);
