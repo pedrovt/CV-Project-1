@@ -289,18 +289,24 @@ class Board {
 
 	selectSlot() {
 		if(this.selectedSlot == 0) {
+			// obtain coordinates of the slot
+			var x = this.overSlot[0];
+			var z = this.overSlot[1];
+
+			// verify if has a draught and if it's the correct team
+			if (this.slotDraughtDic[8*x + z] === null || this.slotDraughtDic[8*x + z].getTeam() !== this.currentTeam) {
+				return;
+			}
+
+			// Select the slot (selected slot = over slot)
 			this.selectedSlot = [];
 			this.selectedSlot[0] = this.overSlot[0];
 			this.selectedSlot[1] = this.overSlot[1];
 
-			// Select a slot and change its color
 			// obtain the slot
-			var x = this.selectedSlot[0];
-			var y = this.selectedSlot[1];
-			var slot = this.slots[x][y];
+			var slot = this.slots[x][z];
 
-			console.log("changingSeletectColors");
-			// change the color
+			// change the slot color
 			slot.setSelectedColors();
 			initBuffersSlots();
 		}
@@ -314,6 +320,8 @@ class Board {
 				console.log("Invalid play");
 			}
 		}
+
+
 	}
 
 	deselectSlot() {

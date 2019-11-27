@@ -33,7 +33,7 @@ var slotsVertexColorBuffer = [];
 var draughtsVertexPositionBuffer = [];		// Draughts
 var draughtsVertexIndexBuffer = [];
 var draughtsVertexColorBuffer = [];
-var draughtsPositions = [];
+var draughtsPositions = [];					// Translation vectors for each draught
 
 // The global transformation parameters ################################################################################
 
@@ -68,10 +68,6 @@ var rotationZZ_SPEED = 1;
 var primitiveType = null;	// To allow choosing the way of drawing the model triangles
 var projectionType = 1;		// To allow choosing the projection type
 
-// Local Transformations ###############################################################################################
-
-// TODO translation vectors for each draught
-
 //----------------------------------------------------------------------------
 //
 // The WebGL code
@@ -81,7 +77,6 @@ var projectionType = 1;		// To allow choosing the projection type
 //
 //  Rendering
 //
-
 
 // Drawing the model
 function drawModel( modelVertexPositionBuffer,
