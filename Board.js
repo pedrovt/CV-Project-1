@@ -219,8 +219,11 @@ class Board {
 			this.overSlot = [0,0];
 		}
 		else {
+			this.resetOverSlot();
 			this.overSlot[0] = (this.overSlot[0]+1)%8;
 		}
+
+		this.selectOverSlot();
 	}
 
 	moveOverLeft() {
@@ -228,8 +231,11 @@ class Board {
 			this.overSlot = [0,0];
 		}
 		else {
+			this.resetOverSlot();
 			this.overSlot[0] = (this.overSlot[0]+7)%8;
 		}
+
+		this.selectOverSlot();
 	}
 
 	moveOverDown() {
@@ -237,8 +243,11 @@ class Board {
 			this.overSlot = [0,0];
 		}
 		else {
+			this.resetOverSlot();
 			this.overSlot[1] = (this.overSlot[1]+1)%8;
 		}
+
+		this.selectOverSlot();
 	}
 
 	moveOverUp() {
@@ -246,37 +255,79 @@ class Board {
 			this.overSlot = [0,0];
 		}
 		else {
+			this.resetOverSlot();
 			this.overSlot[1] = (this.overSlot[1]+7)%8;
 		}
+
+		this.selectOverSlot();
 	}
+
+	selectOverSlot() {
+		// obtain the slot
+		var x = this.overSlot[0];
+		var y = this.overSlot[1];
+		var slot = this.slots[x][y];
+
+		// change the color
+		slot.setOverColors();
+		initBuffersSlots();
+	}
+
+	resetOverSlot() {
+		if (this.overSlot[0] != this.selectedSlot[0] ||  this.overSlot[1] != this.selectedSlot[1]) {
+			// obtain the slot
+			var x = this.overSlot[0];
+			var y = this.overSlot[1];
+			var slot = this.slots[x][y];
+
+			// change the color
+			slot.resetColors();
+			initBuffersSlots();
+		}
+	}
+
 
 	selectSlot() {
 		if(this.selectedSlot == 0) {
 			this.selectedSlot = [];
 			this.selectedSlot[0] = this.overSlot[0];
 			this.selectedSlot[1] = this.overSlot[1];
+
+			// Select a slot and change its color
+			// obtain the slot
+			var x = this.selectedSlot[0];
+			var y = this.selectedSlot[1];
+			var slot = this.slots[x][y];
+
+			console.log("changingSeletectColors");
+			// change the color
+			slot.setSelectedColors();
+			initBuffersSlots();
 		}
 		else {
 			if(this.isValidPlay(this.selectedSlot,this.overSlot,this.currentTeam)) {
 				console.log("Valid play");
 				this.play(this.selectedSlot,this.overSlot,this.currentTeam);
-				this.selectedSlot = [];
+				this.deselectSlot();
 			}
 			else {
 				console.log("Invalid play");
 			}
 		}
-		// To make visible any changes in the slots
-		// TODO obtain the slot
-
-		// TODO change color
-
-		initBuffersSlots();
-
-		
 	}
 
 	deselectSlot() {
+		// Deselect the slot and change its color
+		// obtain the slot
+		var x = this.selectedSlot[0];
+		var y = this.selectedSlot[1];
+		var slot = this.slots[x][y];
+
+		// change the color
+		slot.resetColors();
+		initBuffersSlots();
+
+		// reset the selected slot
 		this.selectedSlot = [];
 	}
 
@@ -340,20 +391,24 @@ class Slot {
 	}
 
 	setSelectedColors() {
-		this.colors = [1,0.27,0];
+		console.log("before" + this.colors);
+		for (var i = 0; i < this.colors.length; i+= 3) {
+			this.colors[i] = 1.0;
+			this.colors[i+1] = 0.27;
+			this.colors[i+2] = 0;
+		}
+		console.log("after" + this.colors);
 	}
 
 	setOverColors() {
-		if(	this.colors[0]!=1 ||
-			this.colors[1]!=0.27 ||
-			this.colors[2]!=0) {
-			this.colors[0] = 0.48;
-			this.colors[1] = 0.98;
-			this.colors[2] = 0;
+		if(	this.colors[0]!=1 || this.colors[1]!=0.27 || this.colors[2]!=0) {
+			for (var i = 0; i < this.colors.length; i+= 3) {
+				this.colors[i] = 0.48;
+				this.colors[i+1] = 0.98;
+				this.colors[i+2] = 0;
+			}
 		}
 	}
-
-
 
 	resetColors() {
 
