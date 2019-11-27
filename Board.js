@@ -264,6 +264,9 @@ class Board {
 		this.selectedSlot = [];
 	}
 
+	// Green:	124,252,0
+	// Red:		255,69,0 
+
 }
 
 class Slot {
@@ -327,6 +330,21 @@ class Slot {
 	getColors() {
 		return this.colors;
 	}
+
+	setSelectedColors() {
+		this.colors = [1,0.27,0];
+	}
+
+	setOverColors() {
+		if(	this.colors[0]!=1 ||
+			this.colors[1]!=0.27 ||
+			this.colors[2]!=0) {
+			this.colors[0] = 0.48;
+			this.colors[1] = 0.98;
+			this.colors[2] = 0;
+		}
+	}
+
 }
 
 class Draught {
