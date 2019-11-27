@@ -1,8 +1,11 @@
 class Board {
 
 	constructor(boardS=10.0, boardH=1.5, slotS=1.0, slotH=0.2, margin=0.001) {
-		if(boardS<8*slotS || boardH<slotH) {
-			// ALERT SIZE ERROR
+		if(boardS<10*slotS) {
+			boardS = 10*slotS;
+		}
+		if(boardH<slotH) {
+			boardH = slotH;
 		}
 		// Material
 		var materialConstants = materials.BRONZE;
@@ -58,6 +61,11 @@ class Board {
 			this.draughts[i + blackTeamStartPositions.length] = new Draught(true,coords[0],coords[1],coords[2]);
 			this.slotDraughtDic[8*j+k] = this.draughts[i + blackTeamStartPositions.length];
 		}
+		
+		// Eaten Draughts
+		this.eatenStack = { true : [], false : [] };
+		this.eatenStackBaseLocation = {	true	: [ this.boardS-(this.boardS-8*this.slotS)/4, -margin, this.boardS-(this.boardS-8*this.slotS)/4 ],
+										false	: [ (this.boardS-8*this.slotS)/4, -margin, (this.boardS-8*this.slotS)/4 ] };
 
 
 		this.vertices = [	-boardS/2,	-margin-boardH,	-boardS/2,
@@ -68,9 +76,7 @@ class Board {
 							boardS/2,	-margin-boardH,	boardS/2,
 							boardS/2,	-margin,		-boardS/2,
 							boardS/2,	-margin,		boardS/2];
-		// Index logic:
-		//	--,-+,++
-		//	++,+-,--
+
 		this.vertexIndices = [	1,5,7,	1,7,3,	// Front	(1, 3, 5, 7)
 								2,6,4,	0,2,4,	// Back		(0, 2, 4, 6)
 								3,7,6,	2,3,6,	// Top		(2, 3, 6, 7)
@@ -206,6 +212,7 @@ class Board {
 		this.slotDraughtDic[8*posI[0]+posI[1]] = null;
 		// Capture
 		if(posF[0]==posI[0]-2 || posF[0]==posI[0]+2) {
+			this.eatenStack[team].push(this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2]);
 			this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2] = null;
 		}
 		this.currentTeam = !this.currentTeam;
