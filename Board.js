@@ -142,6 +142,10 @@ class Board {
 		return this.selectedSlot;
 	}
 
+	getSelectedSlotObject() {
+		return this.slots[this.selectedSlot[0]][this.selectedSlot[1]];
+	}
+
 	getOverSlot() {
 		return this.overSlot;
 	}
