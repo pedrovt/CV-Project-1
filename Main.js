@@ -90,13 +90,12 @@ function drawModel( modelVertexPositionBuffer,
 					hasTexture) {
 
     // Pay attention to transformation order !!
-    
 	mvMatrix = mult( mvMatrix, translationMatrix( tx, ty, tz ) );
 	mvMatrix = mult( mvMatrix, rotationZZMatrix( angleZZ ) );
 	mvMatrix = mult( mvMatrix, rotationYYMatrix( angleYY ) );
 	mvMatrix = mult( mvMatrix, rotationXXMatrix( angleXX ) );
 	mvMatrix = mult( mvMatrix, scalingMatrix( sx, sy, sz ) );
-						 
+
 	// Passing the Model View Matrix to apply the current transformation
 	var mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
 	gl.uniformMatrix4fv(mvUniform, false, new Float32Array(flatten(mvMatrix)));
@@ -128,7 +127,6 @@ function drawModel( modelVertexPositionBuffer,
 //  Drawing the 3D scene
 
 function drawScene() {
-	
 	var pMatrix;
 	
 	var mvMatrix = mat4();
@@ -195,6 +193,11 @@ function drawScene() {
 					true);
 	}
 
+	// Reset draught positions
+	for (var k = 0; k < draughtsPositions; k++) {
+		draughtsPositions[k] = [0, 0, 0];
+	}
+
 	countFrames();
 }
 
@@ -252,7 +255,6 @@ function tick() {
 // User Interaction
 
 function outputInfos(){
-		
 }
 
 //----------------------------------------------------------------------------

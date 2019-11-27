@@ -195,15 +195,26 @@ class Board {
 	}
 
 	play(posI, posF, team) {
-		// Update piece position
-		var draught = this.slotDraughtDic[8*posI[0]+posI[1]];
-		var newCoords = draught.getCoords();
-		newCoords[0] = newCoords[0] + posF[0] - posI[0];
-		newCoords[1] = newCoords[1] + posF[1] - posI[1];
-		draught.setCoords(newCoords);		// TODO coords x,y, z
+		// Get initial and final slot
+		var posFSlot = this.slots[posF[0]][posF[1]];
 
+		// Update draught information
+		var draught = this.slotDraughtDic[8*posI[0]+posI[1]];
+		var currentCoords = draught.getCoords();
+		var newCoords = posFSlot.getCoords();
+		draught.setCoords(newCoords);
+
+		// Compute tx, ty, tz of the draught
+		var diffCoords = [];
+		diffCoords.push(newCoords[0] - currentCoords[0]);
+		diffCoords.push(newCoords[1] - currentCoords[1]);
+		diffCoords.push(newCoords[2] - currentCoords[2]);
+		draught.setDiffCoords(diffCoords);
+
+		// Update slot -> draught dictionary
 		this.slotDraughtDic[8*posF[0]+posF[1]] = this.slotDraughtDic[8*posI[0]+posI[1]];
 		this.slotDraughtDic[8*posI[0]+posI[1]] = null;
+
 		// Capture
 		if(posF[0]==posI[0]-2 || posF[0]==posI[0]+2) {
 			this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2] = null;
@@ -216,7 +227,7 @@ class Board {
 
 	moveOverRight() {
 		if(this.overSlot === null) {
-			this.overSlot = [0,0];
+			this.overSlot = [0,7];
 		}
 		else {
 			this.resetOverSlot();
@@ -228,7 +239,7 @@ class Board {
 
 	moveOverLeft() {
 		if(this.overSlot === null) {
-			this.overSlot = [0,0];
+			this.overSlot = [0,7];
 		}
 		else {
 			this.resetOverSlot();
@@ -240,7 +251,7 @@ class Board {
 
 	moveOverDown() {
 		if(this.overSlot === null) {
-			this.overSlot = [0,0];
+			this.overSlot = [0,7];
 		}
 		else {
 			this.resetOverSlot();
@@ -252,7 +263,7 @@ class Board {
 
 	moveOverUp() {
 		if(this.overSlot === null) {
-			this.overSlot = [0,0];
+			this.overSlot = [0,7];
 		}
 		else {
 			this.resetOverSlot();
@@ -288,36 +299,36 @@ class Board {
 
 
 	selectSlot() {
-		if(this.selectedSlot == 0) {
-			// obtain coordinates of the slot
-			var x = this.overSlot[0];
-			var z = this.overSlot[1];
+		if (this.overSlot != null) {
+			if (this.selectedSlot == 0) {
+				// obtain coordinates of the slot
+				var x = this.overSlot[0];
+				var z = this.overSlot[1];
 
-			// verify if has a draught and if it's the correct team
-			if (this.slotDraughtDic[8*x + z] === null || this.slotDraughtDic[8*x + z].getTeam() !== this.currentTeam) {
-				return;
-			}
+				// verify if has a draught and if it's the correct team
+				if (this.slotDraughtDic[8 * x + z] === null || this.slotDraughtDic[8 * x + z].getTeam() !== this.currentTeam) {
+					return;
+				}
 
-			// Select the slot (selected slot = over slot)
-			this.selectedSlot = [];
-			this.selectedSlot[0] = this.overSlot[0];
-			this.selectedSlot[1] = this.overSlot[1];
+				// Select the slot (selected slot = over slot)
+				this.selectedSlot = [];
+				this.selectedSlot[0] = this.overSlot[0];
+				this.selectedSlot[1] = this.overSlot[1];
 
-			// obtain the slot
-			var slot = this.slots[x][z];
+				// obtain the slot
+				var slot = this.slots[x][z];
 
-			// change the slot color
-			slot.setSelectedColors();
-			initBuffersSlots();
-		}
-		else {
-			if(this.isValidPlay(this.selectedSlot,this.overSlot,this.currentTeam)) {
-				console.log("Valid play");
-				this.play(this.selectedSlot,this.overSlot,this.currentTeam);
-				this.deselectSlot();
-			}
-			else {
-				console.log("Invalid play");
+				// change the slot color
+				slot.setSelectedColors();
+				initBuffersSlots();
+			} else {
+				if (this.isValidPlay(this.selectedSlot, this.overSlot, this.currentTeam)) {
+					console.log("Valid play");
+					this.play(this.selectedSlot, this.overSlot, this.currentTeam);
+					this.deselectSlot();
+				} else {
+					console.log("Invalid play");
+				}
 			}
 		}
 
@@ -373,6 +384,7 @@ class Slot {
 
 		this.colors = [];
 		this.resetColors();
+
 
 		// green 124 252 0 -> 0.48, 0.98, 0
 		// red 255, 69, 0 -> 1, 0.27, 0
@@ -1992,6 +2004,8 @@ class Draught {
 				this.colors.push( 0.00 );
 			}
 		}
+
+		this.diffCoords = [0, 0, 0];
 	}
 
 	getCoords() {
@@ -2016,6 +2030,15 @@ class Draught {
 
 	setCoords(newCoords) {
 		this.idCoords = newCoords;
+	}
+
+
+	setDiffCoords(coords) {
+		this.diffCoords = coords;
+	}
+
+	getDiffCoords(coords) {
+		return this.diffCoords;
 	}
 }
 

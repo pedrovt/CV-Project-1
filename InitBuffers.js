@@ -107,8 +107,8 @@ function initBuffersDraughts() {
         var vertices = draught.getVertices();
         var colors = draught.getColors();
         var draughtVertexIndices = draught.getVerticesIndexes();
-        var coords = draught.getCoords();
-        console.log("Draught " + i + ", coords " + coords);
+        var coords = draught.getDiffCoords();
+        console.log("Draught " + i + ", diff coords " + coords);
 
         var draughtVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, draughtVertexPositionBuffer);
@@ -141,7 +141,7 @@ function initBuffersDraughts() {
         draughtsVertexPositionBuffer.push(draughtVertexPositionBuffer);
         draughtsVertexColorBuffer.push(draughtVertexColorBuffer);
         draughtsVertexIndexBuffer.push(draughtVertexIndexBuffer);
-        draughtsPositions.push([0,0]);
+        draughtsPositions.push(coords);
     }
 }
 //----------------------------------------------------------------------------
