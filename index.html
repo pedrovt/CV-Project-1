@@ -65,20 +65,32 @@
 
     </script>
 
+    <script id="shader-fs" type="x-shader/x-fragment">
+
+        precision mediump float;
+
+        varying vec2 vTextureCoord;
+
+        uniform sampler2D uSampler;
+
+        void main(void) {
+
+            gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+        }
+
+    </script>
+
     <!-- The JS files -->
 
-    <!-- Some useful functions for browser compatibility -->
-
-    <script type="text/javascript" src="Utils/webgl-utils.js"></script>
-
-    <!-- Handling vectors and matrices -->
+    <!-- Auxiliar code -->
+    <script type="text/javascript" src="Utils/fps.js"></script>
+    <script type="text/javascript" src="Utils/initShaders.js"></script>
     <script type="text/javascript" src="Utils/maths.js"></script>
+    <script type="text/javascript" src="Utils/webgl-utils.js"></script>
 
     <!-- Project Code -->
     <script type="text/javascript" src="Board.js"></script>
 
-    <!-- WebGL code -->
-    <script type="text/javascript" src="Utils/initShaders.js"></script>
     <script type="text/javascript" src="Textures.js"></script>
     <script type="text/javascript" src="Main.js"></script>
     <script type="text/javascript" src="EventHandlers.js"></script>
@@ -205,6 +217,9 @@
                                 <option value="1" selected>Perspective Projection</option>
                             </select>
                         </p>
+
+                        <h4>FPS</h4>
+                        <p id="fps"></p>
                     </div>
                 </div> 
                 </div>

@@ -29,7 +29,6 @@ function setEventListeners( canvas ){
 
     // Dropdown lists
 
-
     var projection = document.getElementById("projection-selection");
 
     projection.addEventListener("click", function(){
@@ -47,7 +46,6 @@ function setEventListeners( canvas ){
                 break;
         }
     });
-
 
     var texture = document.getElementById("texture-selection");
 
@@ -422,7 +420,8 @@ function unblock(index) {
 }
 
 function handleKeys() {
-    
+
+
     // Left cursor key
     if (currentlyPressedKeys[37]) {
         if(!blocked[37]) {

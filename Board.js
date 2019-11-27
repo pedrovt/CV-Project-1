@@ -195,6 +195,13 @@ class Board {
 	}
 
 	play(posI, posF, team) {
+		// Update piece position
+		var draught = this.slotDraughtDic[8*posI[0]+posI[1]];
+		var newCoords = draught.getCoords();
+		newCoords[0] = newCoords[0] + posF[0] - posI[0];
+		newCoords[1] = newCoords[1] + posF[1] - posI[1];
+		draught.setCoords(newCoords);		// TODO coords x,y, z
+
 		this.slotDraughtDic[8*posF[0]+posF[1]] = this.slotDraughtDic[8*posI[0]+posI[1]];
 		this.slotDraughtDic[8*posI[0]+posI[1]] = null;
 		// Capture
@@ -202,6 +209,9 @@ class Board {
 			this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2] = null;
 		}
 		this.currentTeam = !this.currentTeam;
+
+		// To make visible any changes in the draughts
+		initBuffersDraughts();
 	}
 
 	moveOverRight() {
@@ -256,6 +266,12 @@ class Board {
 				console.log("Invalid play");
 			}
 		}
+		// To make visible any changes in the slots
+		// TODO obtain the slot
+
+		// TODO change color
+
+		initBuffersSlots();
 
 		
 	}
@@ -297,18 +313,10 @@ class Slot {
 								0,1,3,	0,3,2];	// Left		(0, 1, 2, 3)
 
 		this.colors = [];
-		if (color) {
-			var length = this.vertices.length;
-			for (var i = 0; i < length; i++) {
-				this.colors.push( 0.75 );
-			}
-		}
-		else {
-			var length = this.vertices.length;
-			for (var i = 0; i < length; i++) {
-				this.colors.push( 0.25 );
-			}
-		}
+		this.resetColors();
+
+		// green 124 252 0 -> 0.48, 0.98, 0
+		// red 255, 69, 0 -> 1, 0.27, 0
 	}
 
 	getCoords() {
@@ -345,6 +353,20 @@ class Slot {
 		}
 	}
 
+
+
+	resetColors() {
+
+		var color = 0.25;
+		if (this.colorBool) {
+			color = 0.75;
+		}
+
+		var length = this.vertices.length;
+		for (var i = 0; i < length; i++) {
+			this.colors[i] = color;
+		}
+	}
 }
 
 class Draught {
@@ -1927,6 +1949,10 @@ class Draught {
 
 	getColors() {
 		return this.colors;
+	}
+
+	setCoords(newCoords) {
+		this.idCoords = newCoords;
 	}
 }
 

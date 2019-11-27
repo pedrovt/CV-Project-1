@@ -33,6 +33,7 @@ var slotsVertexColorBuffer = [];
 var draughtsVertexPositionBuffer = [];		// Draughts
 var draughtsVertexIndexBuffer = [];
 var draughtsVertexColorBuffer = [];
+var draughtsPositions = [];
 
 // The global transformation parameters ################################################################################
 
@@ -123,6 +124,11 @@ function initBuffersBoard() {
 }
 
 function initBuffersSlots() {
+	// Reinitialize buffers
+	slotsVertexPositionBuffer = [];
+	slotsVertexIndexBuffer =  [];
+	slotsVertexColorBuffer = [];
+
 	for (var i = 0; i < 8; i++) {			// For each line (we have 8 x 8 = 8^2 slots)
 		var line = slots[i];
 
@@ -165,11 +171,17 @@ function initBuffersSlots() {
 			slotsVertexPositionBuffer.push(slotVertexPositionBuffer);
             slotsVertexColorBuffer.push(slotVertexColorBuffer);
 			slotsVertexIndexBuffer.push(slotVertexIndexBuffer);
+
 		}
 	}
 }
 
 function initBuffersDraughts() {
+	draughtsVertexPositionBuffer = [];
+	draughtsVertexIndexBuffer = [];
+	draughtsVertexColorBuffer = [];
+	draughtsPositions = [];
+
 	for (var i = 0; i < 24; i++) {
 
 		// Slot
@@ -179,6 +191,7 @@ function initBuffersDraughts() {
 		var vertices = draught.getVertices();
 		var colors = draught.getColors();
 		var draughtVertexIndices = draught.getVerticesIndexes();
+		var coords = draught.getCoords();
 
 		var draughtVertexPositionBuffer = gl.createBuffer();
 		gl.bindBuffer(gl.ARRAY_BUFFER, draughtVertexPositionBuffer);
@@ -207,9 +220,11 @@ function initBuffersDraughts() {
 		draughtVertexIndexBuffer.itemSize = 1;
 		draughtVertexIndexBuffer.numItems = 3072;
 
+		// Update draughts info
 		draughtsVertexPositionBuffer.push(draughtVertexPositionBuffer);
         draughtsVertexColorBuffer.push(draughtVertexColorBuffer);
 		draughtsVertexIndexBuffer.push(draughtVertexIndexBuffer);
+		draughtsPositions.push(coords);
 	}
 }
 //----------------------------------------------------------------------------
@@ -222,7 +237,8 @@ function drawModel( modelVertexPositionBuffer,
 					sx, sy, sz,
 					tx, ty, tz,
 					mvMatrix,
-					primitiveType ) {
+					primitiveType,
+					hasTexture) {
 
     // Pay attention to transformation order !!
     
@@ -240,19 +256,16 @@ function drawModel( modelVertexPositionBuffer,
 	gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexPositionBuffer);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, modelVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-	// NEW --- Textures
-	/* gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexTextureCoordBuffer);
-    gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, modelVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, webGLTexture);
-        
-    gl.uniform1i(shaderProgram.samplerUniform, 0);
-    */
-
 	// Colors
     gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexColorBuffer);
     gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, modelVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+	// NEW --- Textures
+	if (hasTexture) {
+		gl.activeTexture(gl.TEXTURE0);
+		gl.bindTexture(gl.TEXTURE_2D, webGLTexture);
+		gl.uniform1i(shaderProgram.samplerUniform, 0);
+	}
 
     // The vertex indices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);
@@ -304,7 +317,8 @@ function drawScene() {
 	           sx, sy, sz,
 	           tx, ty, tz,
 	           mvMatrix,
-	           primitiveType );
+	           primitiveType,
+		false);
 
 	// Slots Models
 	for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
@@ -315,7 +329,8 @@ function drawScene() {
 					sx, sy, sz,
 					tx, ty, tz,
 					mvMatrix,
-					primitiveType );
+					primitiveType,
+					false);
 	}
 
 	// Draughts Models
@@ -325,10 +340,13 @@ function drawScene() {
 					draughtsVertexIndexBuffer[j],
 					angleXX, angleYY, angleZZ,
 					sx, sy, sz,
-					tx, ty, tz,
+					tx + draughtsPositions[j][0], ty + draughtsPositions[j][1], tz,
 					mvMatrix,
-					primitiveType );
+					primitiveType,
+					true);
 	}
+
+	countFrames();
 }
 
 //----------------------------------------------------------------------------
