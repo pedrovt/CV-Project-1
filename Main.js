@@ -109,11 +109,11 @@ function drawModel( modelVertexPositionBuffer,
     gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, modelVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
 	// NEW --- Textures
-	/*if (hasTexture) {
+	if (hasTexture) {
 		gl.activeTexture(gl.TEXTURE0);
 		gl.bindTexture(gl.TEXTURE_2D, webGLTexture);
 		gl.uniform1i(shaderProgram.samplerUniform, 0);
-	}*/
+	}
 
     // The vertex indices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);
@@ -165,7 +165,7 @@ function drawScene() {
 	           tx, ty, tz,
 	           mvMatrix,
 	           primitiveType,
-		false);
+		true);
 
 	// Slots Models
 	for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
@@ -187,10 +187,10 @@ function drawScene() {
 					draughtsVertexIndexBuffer[j],
 					angleXX, angleYY, angleZZ,
 					sx, sy, sz,
-					tx + draughtsPositions[j][0], ty + draughtsPositions[j][1], tz,		// if tz + draughtsPositions[j][2] instead of tz, piece disappears
+					tx , ty , tz,		// if tz + draughtsPositions[j][2] instead of tz, piece disappears
 					mvMatrix,
 					primitiveType,
-					true);
+					false);
 	}
 
 	// Reset draught positions
