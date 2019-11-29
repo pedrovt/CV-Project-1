@@ -370,7 +370,7 @@ class Board {
 	// Green:	124,252,0
 	// Red:		255,69,0 
 
-    getTextureCoords() {
+    getTextureCoords() {	//TODO
         return undefined;
     }
 }

@@ -21,9 +21,9 @@ function initBuffersBoard() {
     // Textures
     boardVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexColorBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-    boardVertexColorBuffer.itemSize = 2;         // TODO
-    boardVertexColorBuffer.numItems = 24;        // TODO
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+    boardVertexColorBuffer.itemSize = 3;                        // TODO
+    boardVertexColorBuffer.numItems = vertices.length / 3;        // TODO
 
     // Colors
     /* boardVertexColorBuffer = gl.createBuffer();

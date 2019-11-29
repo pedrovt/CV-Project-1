@@ -40,7 +40,7 @@ function drawScene() {
         tx, ty, tz,
         mvMatrix,
         primitiveType,
-        true);
+        false);
 
     // Slots Models
     for (var i = 0; i < slotsVertexPositionBuffer.length; i++) {
