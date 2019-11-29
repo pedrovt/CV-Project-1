@@ -8,11 +8,11 @@ class Board {
 			boardH = slotH;
 		}
 		// Material
-		var materialConstants = materials.BRONZE;
-		this.kAmbi = materialConstants.slice(0,3);
-		this.kDiff = materialConstants.slice(3,6);
-		this.kSpec = materialConstants.slice(6,9);
-		this.nPhong = materialConstants[9];
+		this.materialConstants = materials.GOLD;
+		this.kAmbi = this.materialConstants.slice(0,3);
+		this.kDiff = this.materialConstants.slice(3,6);
+		this.kSpec = this.materialConstants.slice(6,9);
+		this.nPhong = this.materialConstants[9];
 
 		// Slots
 		this.slotDraughtDic = new Array();
@@ -84,6 +84,11 @@ class Board {
 								4,6,5,	5,6,7,	// Right	(4, 5, 6, 7)
 								0,1,3,	0,3,2];	// Left		(0, 1, 2, 3)
 
+
+		// Computing the triangle normal vector for every vertex
+        this.normals = [];
+        computeVertexNormals( this.vertices, this.normals );
+
 		this.colors = [];
 		var length = this.vertices.length;
 		for (var i = 0; i < length; i++) {
@@ -102,12 +107,21 @@ class Board {
 		// this.nPhong = materialConstants[9];
 	}
 
+	// order : this.kAmbi, this.kDiff, this.kSpec, this.nPhong
+	getMaterial() {
+		return [this.kAmbi, this.kDiff, this.kSpec, this.nPhong];
+	}
+
 	getVertices() {
 		return this.vertices;
 	}
 
 	getVerticesIndexes() {
 		return this.vertexIndices;
+	}
+
+	getVertexNormals() {
+		return this.normals;
 	}
 
 	getSlotVertices() {
@@ -331,7 +345,6 @@ class Board {
 		}
 	}
 
-
 	selectSlot() {
 		if (this.overSlot != null) {
 			if (this.selectedSlot == 0) {
@@ -388,11 +401,7 @@ class Board {
 	}
 
 	// Green:	124,252,0
-	// Red:		255,69,0 
-
-    getTextureCoords() {	//TODO
-        return undefined;
-    }
+	// Red:		255,69,0
 }
 
 class Slot {

@@ -70,22 +70,19 @@ function initShaders( gl ) {
 	shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
 	gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
 
-	// NEW --- Texture coordinates
-	
-    //shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-    //gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-
 	// Colors
 	shaderProgram.vertexColorAttribute = gl.getAttribLocation(shaderProgram, "aVertexColor");
 	gl.enableVertexAttribArray(shaderProgram.vertexColorAttribute);
 
+    // Vertex Normals
+    shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "vNormal");
+    gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
+
 	// NEW --- The matrices
-	 
     shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
     shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
     
     // NEW --- The sampler
-    
     shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
 
 	return shaderProgram;

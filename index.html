@@ -65,21 +65,6 @@
 
     </script>
 
-    <script id="shader-fs" type="x-shader/x-fragment">
-
-        precision mediump float;
-
-        varying vec2 vTextureCoord;
-
-        uniform sampler2D uSampler;
-
-        void main(void) {
-
-            gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-        }
-
-    </script>
-
     <!-- The JS files -->
 
     <!-- Auxiliar code -->
@@ -91,7 +76,7 @@
 
     <!-- Project Code -->
     <script type="text/javascript" src="Board.js"></script>
-    <script type="text/javascript" src="Textures.js"></script>
+    <script type="text/javascript" src="Illumination.js"></script>
     <script type="text/javascript" src="InitBuffers.js"></script>
     <script type="text/javascript" src="DrawModel.js"></script>
     <script type="text/javascript" src="DrawScene.js"></script>
@@ -100,6 +85,9 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="Utils/css/bootstrap.min.css">
+    <link rel="icon" type="image/png" sizes="32x32" href="Utils/css/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="Utils/css/favicon-16x16.png">
+
 </head>
 
 
@@ -216,9 +204,9 @@
 
                         <h4>Settings</h4>
 
-                        <h5 hidden>Rendering Mode</h5>
+                        <h5>Rendering Mode</h5>
                         <p>
-                            <select hidden class="custom-select" id="rendering-mode-selection">
+                            <select class="custom-select" id="rendering-mode-selection">
                                 <option value="0">Filled Triangles</option>
                                 <option value="1">Wireframe</option>
                                 <option value="2">Vertices</option>
