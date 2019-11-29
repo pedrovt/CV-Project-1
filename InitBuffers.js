@@ -10,7 +10,7 @@ function initBuffersBoard() {
     var vertices = board.getVertices();
     var colors = board.getColors();
     var boardVertexIndices = board.getVerticesIndexes();
-    var textureCoords = board.getTextureCoords();
+    var normals = board.getVertexNormals();
 
     boardVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexPositionBuffer);
@@ -18,19 +18,29 @@ function initBuffersBoard() {
     boardVertexPositionBuffer.itemSize = 3;
     boardVertexPositionBuffer.numItems = vertices.length / 3;
 
-    // Textures
+    gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute,
+        boardVertexPositionBuffer.itemSize,
+        gl.FLOAT, false, 0, 0);
+
+
+    // Colors
     boardVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexColorBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
-    boardVertexColorBuffer.itemSize = 3;                        // TODO
-    boardVertexColorBuffer.numItems = vertices.length / 3;        // TODO
-
-    // Colors
-    /* boardVertexColorBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexColorBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
     boardVertexColorBuffer.itemSize = 3;
-    boardVertexColorBuffer.numItems = vertices.length / 3;  */
+    boardVertexColorBuffer.numItems = vertices.length / 3;
+
+    // Vertex Normal Vectors
+    boardVertexNormalBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexNormalBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normals), gl.STATIC_DRAW);
+    boardVertexNormalBuffer.itemSize = 3;
+    boardVertexNormalBuffer.numItems = normals.length / 3;
+
+    // Associating to the vertex shader
+    gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute,
+        boardVertexNormalBuffer.itemSize,
+        gl.FLOAT, false, 0, 0);
 
     // Vertex indices
     boardVertexIndexBuffer = gl.createBuffer();

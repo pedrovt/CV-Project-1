@@ -7,7 +7,7 @@ function drawModel( modelVertexPositionBuffer,
                     tx, ty, tz,
                     mvMatrix,
                     primitiveType,
-                    hasTexture) {
+                    hasIllumination) {
 
     // Pay attention to transformation order !!
     mvMatrix = mult( mvMatrix, translationMatrix( tx, ty, tz ) );
@@ -24,20 +24,18 @@ function drawModel( modelVertexPositionBuffer,
     gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexPositionBuffer);
     gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, modelVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-    // Colors
-    gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexColorBuffer);
-    gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, modelVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-    // Textures
-    if (hasTexture) {
-        gl.activeTexture(gl.TEXTURE0);
-        gl.bindTexture(gl.TEXTURE_2D, webGLTexture);
-        gl.uniform1i(shaderProgram.samplerUniform, 0);
+    // Colors or illumination
+    if (hasIllumination) {
+        drawModelIllumination();
     }
+    else {
 
+        gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexColorBuffer);
+        gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, modelVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
+    }
     // The vertex indices
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, modelVertexIndexBuffer);
 
     // Drawing the triangles
-    gl.drawElements(gl.TRIANGLES, modelVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+    gl.drawElements(primitiveType, modelVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
 }

@@ -1,6 +1,6 @@
 
 //  Drawing the 3D scene
-
+var pos_Viewer = [ 0.0, 0.0, 0.0, 1.0 ];
 function drawScene() {
     var pMatrix;
 
@@ -22,12 +22,20 @@ function drawScene() {
         // Ensure that the model is "inside" the view volume
         pMatrix = perspective( 45, 1, 0.05, 10 );
         tz = -2.25;
+
+        pos_Viewer[0] = pos_Viewer[1] = pos_Viewer[2] = 0.0;
+
+        pos_Viewer[3] = 1.0;
     }
 
     // Passing the Projection Matrix to apply the current projection
-
     var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
     gl.uniformMatrix4fv(pUniform, false, new Float32Array(flatten(pMatrix)));
+
+    // Passing the viewer position to the vertex shader
+    gl.uniform4fv( gl.getUniformLocation(shaderProgram, "viewerPosition"),
+        flatten(pos_Viewer) );
+
 
     // Instantiating the models
 
