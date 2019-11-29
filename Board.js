@@ -177,8 +177,12 @@ class Board {
 					}
 					// Capture
 					else if(posF[1]==posI[1]-2) {
-						return(	(posF[0]==posI[0]-2 && this.slotDraughtDic[8*(posI[0]-1)+posI[1]-1].getTeam()==(!team)) ||
-								(posF[0]==posI[0]+2 && this.slotDraughtDic[8*(posI[0]-1)+posI[1]+1].getTeam()==(!team)));
+						if(posF[0]==posI[0]-2) {
+							return this.slotDraughtDic[8*(posI[0]-1)+posI[1]-1].getTeam()==(!team);
+						}
+						else if(posF[0]==posI[0]+2) {
+							return this.slotDraughtDic[8*(posI[0]+1)+posI[1]-1].getTeam()==(!team);
+						}
 					}
 					return false;
 				}
@@ -189,8 +193,12 @@ class Board {
 					}
 					// Capture
 					else if(posF[1]==posI[1]+2) {
-						return(	(posF[0]==posI[0]-2 && this.slotDraughtDic[8*(posI[0]+1)+posI[1]-1].getTeam()==(!team)) ||
-								(posF[0]==posI[0]+2 && this.slotDraughtDic[8*(posI[0]+1)+posI[1]+1].getTeam()==(!team)));
+						if(posF[0]==posI[0]-2) {
+							return this.slotDraughtDic[8*(posI[0]-1)+posI[1]+1].getTeam()==(!team);
+						}
+						else if(posF[0]==posI[0]+2) {
+							return this.slotDraughtDic[8*(posI[0]+1)+posI[1]+1].getTeam()==(!team);
+						}
 					}
 					return false;
 				}
