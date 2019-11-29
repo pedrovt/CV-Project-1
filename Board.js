@@ -231,7 +231,9 @@ class Board {
 
 		// Capture
 		if(posF[0]==posI[0]-2 || posF[0]==posI[0]+2) {
-			this.eatenStack[team].push(this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2]);
+			var eatenDraught = this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2];
+			this.eatenStack[team].push(eatenDraught);
+			eatenDraught.setCoords([this.eatenStackBaseLocation[team][0], this.eatenStackBaseLocation[team][1]+this.eatenStack[team].length*eatenDraught.getHeight(), this.eatenStackBaseLocation[team][2]]);
 			this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2] = null;
 		}
 		this.currentTeam = !this.currentTeam;
@@ -465,6 +467,7 @@ class Slot {
 class Draught {
 
 	constructor(team, x, y, z, r=0.4, h=0.5) {
+		this.height = h;
 		this.team = team;
 		this.idCoords = [x,y,z];
 		this.setVertices(x, y, z);
@@ -2063,6 +2066,10 @@ class Draught {
 
 	getDiffCoords(coords) {
 		return this.diffCoords;
+	}
+
+	getHeight() {
+		return this.height;
 	}
 }
 
