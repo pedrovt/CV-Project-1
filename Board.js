@@ -372,6 +372,9 @@ class Board {
 	deselectSlot() {
 		// Deselect the slot and change its color
 		// obtain the slot
+		if(this.selectedSlot == []) {
+			return;
+		}
 		var x = this.selectedSlot[0];
 		var y = this.selectedSlot[1];
 		var slot = this.slots[x][y];
