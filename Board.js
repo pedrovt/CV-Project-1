@@ -360,6 +360,9 @@ class Board {
 	// Green:	124,252,0
 	// Red:		255,69,0 
 
+    getTextureCoords() {
+        return undefined;
+    }
 }
 
 class Slot {

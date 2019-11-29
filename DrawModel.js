@@ -28,7 +28,7 @@ function drawModel( modelVertexPositionBuffer,
     gl.bindBuffer(gl.ARRAY_BUFFER, modelVertexColorBuffer);
     gl.vertexAttribPointer(shaderProgram.vertexColorAttribute, modelVertexColorBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-    // NEW --- Textures
+    // Textures
     if (hasTexture) {
         gl.activeTexture(gl.TEXTURE0);
         gl.bindTexture(gl.TEXTURE_2D, webGLTexture);

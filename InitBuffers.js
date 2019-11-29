@@ -10,6 +10,7 @@ function initBuffersBoard() {
     var vertices = board.getVertices();
     var colors = board.getColors();
     var boardVertexIndices = board.getVerticesIndexes();
+    var textureCoords = board.getTextureCoords();
 
     boardVertexPositionBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexPositionBuffer);
@@ -18,18 +19,18 @@ function initBuffersBoard() {
     boardVertexPositionBuffer.numItems = vertices.length / 3;
 
     // Textures
-    /*boardVertexTextureCoordBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexTextureCoordBuffer);
+    boardVertexColorBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexColorBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-    boardVertexTextureCoordBuffer.itemSize = 2;
-    boardVertexTextureCoordBuffer.numItems = 24;*/
+    boardVertexColorBuffer.itemSize = 2;         // TODO
+    boardVertexColorBuffer.numItems = 24;        // TODO
 
     // Colors
-    boardVertexColorBuffer = gl.createBuffer();
+    /* boardVertexColorBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexColorBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
     boardVertexColorBuffer.itemSize = 3;
-    boardVertexColorBuffer.numItems = vertices.length / 3;
+    boardVertexColorBuffer.numItems = vertices.length / 3;  */
 
     // Vertex indices
     boardVertexIndexBuffer = gl.createBuffer();
@@ -45,7 +46,7 @@ function initBuffersSlots() {
     slotsVertexIndexBuffer =  [];
     slotsVertexColorBuffer = [];
 
-    for (var i = 0; i < 8; i++) {			// For each line (we have 8 x 8 = 8^2 slots)
+    for (var i = 0; i < 8; i++) {			                    // For each line (we have 8 x 8 = 8^2 slots)
         var line = slots[i];
 
         for (var j = 0; j < line.length; j++) {					// For each column
@@ -62,13 +63,6 @@ function initBuffersSlots() {
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
             slotVertexPositionBuffer.itemSize = 3;
             slotVertexPositionBuffer.numItems = vertices.length / 3;
-
-            // Textures
-            /*boardVertexTextureCoordBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexTextureCoordBuffer);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-            boardVertexTextureCoordBuffer.itemSize = 2;
-            boardVertexTextureCoordBuffer.numItems = 24;*/
 
             // Colors
             var slotVertexColorBuffer = gl.createBuffer();
@@ -96,7 +90,6 @@ function initBuffersDraughts() {
     draughtsVertexPositionBuffer = [];
     draughtsVertexIndexBuffer = [];
     draughtsVertexColorBuffer = [];
-    draughtsPositions = [];
 
     for (var i = 0; i < 24; i++) {
 
@@ -107,21 +100,12 @@ function initBuffersDraughts() {
         var vertices = draught.getVertices();
         var colors = draught.getColors();
         var draughtVertexIndices = draught.getVerticesIndexes();
-        var coords = draught.getDiffCoords();
-        console.log("Draught " + i + ", diff coords " + coords);
 
         var draughtVertexPositionBuffer = gl.createBuffer();
         gl.bindBuffer(gl.ARRAY_BUFFER, draughtVertexPositionBuffer);
         gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
         draughtVertexPositionBuffer.itemSize = 3;
         draughtVertexPositionBuffer.numItems = vertices.length / 3;
-
-        // Textures
-        /*boardVertexTextureCoordBuffer = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, boardVertexTextureCoordBuffer);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
-        boardVertexTextureCoordBuffer.itemSize = 2;
-        boardVertexTextureCoordBuffer.numItems = 24;*/
 
         // Colors
         var draughtVertexColorBuffer = gl.createBuffer();
@@ -141,7 +125,6 @@ function initBuffersDraughts() {
         draughtsVertexPositionBuffer.push(draughtVertexPositionBuffer);
         draughtsVertexColorBuffer.push(draughtVertexColorBuffer);
         draughtsVertexIndexBuffer.push(draughtVertexIndexBuffer);
-        draughtsPositions.push(coords);
     }
 }
 //----------------------------------------------------------------------------
