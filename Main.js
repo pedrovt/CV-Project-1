@@ -33,7 +33,6 @@ var slotsVertexColorBuffer = [];
 var draughtsVertexPositionBuffer = [];		// Draughts
 var draughtsVertexIndexBuffer = [];
 var draughtsVertexColorBuffer = [];
-var draughtsPositions = [];					// Translation vectors for each draught
 
 // The global transformation parameters ################################################################################
 
@@ -71,7 +70,17 @@ var projectionType = 1;		// To allow choosing the projection type
 //----------------------------------------------------------------------------
 // User Interaction
 
-function outputInfos(){
+function outputInfos() {
+	// FPS
+	countFrames();
+
+	// Current team
+	if (board.currentTeam) {
+		document.getElementById('current-team').innerHTML = "Team 1 (Black Slots)";
+	}
+	else {
+		document.getElementById('current-team').innerHTML = "Team 2 (White Slots)";
+	}
 }
 
 //----------------------------------------------------------------------------

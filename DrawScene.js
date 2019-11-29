@@ -62,16 +62,11 @@ function drawScene() {
             draughtsVertexIndexBuffer[j],
             angleXX, angleYY, angleZZ,
             sx, sy, sz,
-            tx , ty , tz,		// if tz + draughtsPositions[j][2] instead of tz, piece disappears
+            tx , ty , tz,
             mvMatrix,
             primitiveType,
             false);
     }
 
-    // Reset draught positions
-    for (var k = 0; k < draughtsPositions; k++) {
-        draughtsPositions[k] = [0, 0, 0];
-    }
-
-    countFrames();
+    outputInfos();
 }
