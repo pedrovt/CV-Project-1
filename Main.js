@@ -147,6 +147,10 @@ function outputInfos() {
 		alert("Game Over! Congratulations to team " + board.getWinningTeam());
 		resetGame();
 	}
+
+	var scores = board.getScores();
+	document.getElementById("team1-score").innerText = scores[0];
+	document.getElementById("team2-score").innerText = scores[1];
 }
 
 //----------------------------------------------------------------------------

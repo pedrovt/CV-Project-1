@@ -110,20 +110,7 @@ class Board {
 		this.gameOver = false;
 	}
 
-	setMaterial(material) {
-		// do something regarding the parameter material, then:
-		// var materialConstants = ???;
-		// this.kAmbi = materialConstants.slice(0,3);
-		// this.kDiff = materialConstants.slice(3,6);
-		// this.kSpec = materialConstants.slice(6,9);
-		// this.nPhong = materialConstants[9];
-	}
-
-	// order : this.kAmbi, this.kDiff, this.kSpec, this.nPhong
-	getMaterial() {
-		return [this.kAmbi, this.kDiff, this.kSpec, this.nPhong];
-	}
-
+	// Getters #############################################
 	getVertices() {
 		return this.vertices;
 	}
@@ -182,6 +169,7 @@ class Board {
 		return this.overSlot;
 	}
 
+	// Playing Logic ##########################################
 	isValidPosition(pos) {
 		return(pos.length==2 && pos[0]>=0 && pos[0]<=7 && pos[1]>=0 && pos[1]<=7);
 	}
@@ -285,6 +273,7 @@ class Board {
 		initBuffersDraughts();
 	}
 
+	// Slots Logic #############################################
 	moveOverRight() {
 		if(this.overSlot === null) {
 			this.overSlot = [0,7];
@@ -415,6 +404,7 @@ class Board {
 	// Green:	124,252,0
 	// Red:		255,69,0
 
+	// Game info ###############################################
 	getGameOver() {
 		return this.gameOver;
 	}
@@ -422,7 +412,37 @@ class Board {
 	getWinningTeam() {
 		if (this.capturedStack[true].length == 12) return "Team 1";
 		return "Team 2";
-}
+	}
+
+	getScores() {
+		return [this.capturedStack[true].length, this.capturedStack[false].length]
+	}
+
+	changeTeamPieces(team, color) {	// TODO
+		for (var i = 0; i < this.draughts.length; i++) {
+			if (this.draughts[i].getTeam() === team) {
+				// change color
+				this.draughts[i].setColor(color);
+			}
+		}
+
+	}
+
+	// For illumination ####################################
+	setMaterial(material) {
+		// do something regarding the parameter material, then:
+		// var materialConstants = ???;
+		// this.kAmbi = materialConstants.slice(0,3);
+		// this.kDiff = materialConstants.slice(3,6);
+		// this.kSpec = materialConstants.slice(6,9);
+		// this.nPhong = materialConstants[9];
+	}
+
+	// order : this.kAmbi, this.kDiff, this.kSpec, this.nPhong
+	getMaterial() {
+		return [this.kAmbi, this.kDiff, this.kSpec, this.nPhong];
+	}
+
 }
 
 class Slot {
@@ -1550,18 +1570,7 @@ class Draught {
 
 		this.colors = [];
 
-		if (team) {	// Team 1, color white
-			var length = this.vertices.length;
-			for (var i = 0; i < length; i++) {
-				this.colors.push( 0.50 );
-			}
-		}
-		else {
-			var length = this.vertices.length;
-			for (var i = 0; i < length; i++) {
-				this.colors.push( 0.00 );
-			}
-		}
+		this.setColor(0);
 
 		this.diffCoords = [0, 0, 0];
 	}
@@ -2104,16 +2113,6 @@ class Draught {
 		return this.colors;
 	}
 
-	setCoords(newCoords) {
-		this.idCoords = newCoords;
-		this.setVertices(newCoords[0], newCoords[1], newCoords[2]);
-	}
-
-
-	setDiffCoords(coords) {
-		this.diffCoords = coords;
-	}
-
 	getDiffCoords(coords) {
 		return this.diffCoords;
 	}
@@ -2121,6 +2120,64 @@ class Draught {
 	getHeight() {
 		return this.height;
 	}
+
+	setCoords(newCoords) {
+		this.idCoords = newCoords;
+		this.setVertices(newCoords[0], newCoords[1], newCoords[2]);
+	}
+
+	setDiffCoords(coords) {
+		this.diffCoords = coords;
+	}
+
+	// Colours ####################################
+	setColor(colorCode) {
+		if (this.team) {
+			switch (colorCode) {
+				case 1:
+					// Color 0 purple - green - blue
+					this.setColorDraught([128, 64, 191], [59, 102, 250], [31, 10, 224]);
+					break;
+				default:
+					// Color 1 Gray
+					this.setColorDraught([127, 127, 127], [127, 127, 127], [127, 127, 127]);
+					break;
+			}
+		}
+		else {
+			switch (colorCode) {
+				case 1:
+					// Color 0 orange - brown - red #B61919
+					this.setColorDraught([255, 69, 0], [71, 10, 10], [205,133,63]);
+					break;
+				default:
+					// Color 1 Black
+					this.setColorDraught([0, 0, 0], [0, 0, 0], [0, 0, 0]);
+					break;
+			}
+		}
+
+	}
+
+	setColorDraught(color1, color2, color3) {
+		this.colors = [];
+
+		var length = this.vertices.length;
+		for (var i = 0; i < length; i+=9) {
+			this.colors.push( color1[0] / 255);
+			this.colors.push( color1[1] / 255);
+			this.colors.push( color1[2] / 255);
+
+			this.colors.push( color2[0] / 255);
+			this.colors.push( color2[1] / 255);
+			this.colors.push( color2[2] / 255);
+
+			this.colors.push( color3[0] / 255);
+			this.colors.push( color3[1] / 255);
+			this.colors.push( color3[2] / 255);
+		}
+	}
+
 }
 
 const materials = {

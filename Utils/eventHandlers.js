@@ -47,40 +47,22 @@ function setEventListeners( canvas ){
         }
     });
 
-    var texture = document.getElementById("texture-selection");
+    var piece1Selection = document.getElementById("piece1-selection");
 
-    texture.addEventListener("click", function(){
-
+    piece1Selection.addEventListener("click", function(){
         // Getting the selection
-
-        var t = texture.selectedIndex;
-
-        switch(t){
-
-            case 0 : textureType = 0;
-                break;
-
-            case 1 : textureType = 1;
-                break;
-        }
+        var p = piece1Selection.selectedIndex;
+        board.changeTeamPieces(true, p);
+        initBuffersDraughts();
     });
 
-    var shape = document.getElementById("shape-selection");
+    var piece2Selection = document.getElementById("piece2-selection");
 
-    shape.addEventListener("click", function(){
-
+    piece2Selection.addEventListener("click", function(){
         // Getting the selection
-
-        var s = shape.selectedIndex;
-
-        switch(s){
-
-            case 0 : shapeType = 0;
-                break;
-
-            case 1 : shapeType = 1;
-                break;
-        }
+        var p = piece2Selection.selectedIndex;
+        board.changeTeamPieces(false, p);
+        initBuffersDraughts();
     });
 
     var rendering = document.getElementById("rendering-mode-selection");

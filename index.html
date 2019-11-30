@@ -81,7 +81,7 @@
     <script type="text/javascript" src="DrawModel.js"></script>
     <script type="text/javascript" src="DrawScene.js"></script>
     <script type="text/javascript" src="Main.js"></script>
-    <script type="text/javascript" src="EventHandlers.js"></script>
+    <script type="text/javascript" src="Utils/eventHandlers.js"></script>
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="Utils/css/bootstrap.min.css">
@@ -133,26 +133,6 @@
                         <button class="btn btn-info btn-sm" id="scale-down-button">-</button>
                     </p>
 
-
-                    <div hidden>
-                        <h4>Pieces</h4>
-                        <h5>Texture</h5>
-                        <p>
-                            <select class="custom-select" id="texture-selection">
-                                <option value="0">Orthogonal Projection</option>
-                                <option value="1">Perspective Projection</option>
-                            </select>
-                        </p>
-
-                        <h5 >Shape</h5>
-                        <p>
-                            <select class="custom-select" id="shape-selection">
-                                <option value="0">Orthogonal Projection</option>
-                                <option value="1">Perspective Projection</option>
-                            </select>
-                        </p>
-                    </div>
-
                     <h5>Rendering Mode</h5>
                     <p>
                         <select class="custom-select" id="rendering-mode-selection">
@@ -174,6 +154,22 @@
                 <!-- ################################################### -->
                 <div class="col">
                     <h4>Other Options</h4>
+                    <div>
+                        <h5>Pieces</h5>
+                        <p>
+                            Team 1: <select class="custom-select" id="piece1-selection">
+                                <option value="0">Gray</option>
+                                <option value="1">Psychedelic Blue</option>
+                            </select>
+                        </p>
+                        <p>
+                            Team 2: <select class="custom-select" id="piece2-selection">
+                                <option value="0">Black</option>
+                                <option value="1">Orange</option>
+                            </select>
+                        </p>
+                    </div>
+
                     <h5>Rotate</h5>
 
                     <h6>XX</h6>
