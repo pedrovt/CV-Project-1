@@ -91,11 +91,23 @@ class Board {
 
 		this.colors = [];
 		var length = this.vertices.length;
-		for (var i = 0; i < length; i++) {
-			this.colors.push( 0.10 );
+		for (var i = 0; i < length; i+=9) {
+			this.colors.push( 102 / 255 );
+			this.colors.push( 51 / 255 );
+			this.colors.push( 0 / 255 );
+
+			this.colors.push( 164 / 255 );
+			this.colors.push( 84 / 255 );
+			this.colors.push( 0 / 255 );
+
+			this.colors.push( 254 / 255 );
+			this.colors.push( 127 / 255 );
+			this.colors.push( 0 / 255 );
 		}
 
 		this.currentTeam = true;
+
+		this.gameOver = false;
 	}
 
 	setMaterial(material) {
@@ -268,7 +280,7 @@ class Board {
 			this.slotDraughtDic[4*(posI[0]+posF[0])+(posI[1]+posF[1])/2] = null;
 		}
 		this.currentTeam = !this.currentTeam;
-
+		this.gameOver = this.capturedStack[true].length == 12 || this.capturedStack[false].length == 12;
 		// To make visible any changes in the draughts
 		initBuffersDraughts();
 	}
@@ -402,6 +414,15 @@ class Board {
 
 	// Green:	124,252,0
 	// Red:		255,69,0
+
+	getGameOver() {
+		return this.gameOver;
+	}
+
+	getWinningTeam() {
+		if (this.capturedStack[true].length == 12) return "Team 1";
+		return "Team 2";
+}
 }
 
 class Slot {

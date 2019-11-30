@@ -228,31 +228,11 @@ function setEventListeners( canvas ){
     };
 
     document.getElementById("reset-button").onclick = function(){
+        resetGame();
+    };
 
-        // The initial values
-        tx = 0.0;
-        ty = 0.0;
-        tz = 0.0;
-
-        angleXX = 40;
-        angleYY = 0.0;
-        angleZZ = 0.0;
-
-        sx = 0.13;
-        sy = 0.13;
-        sz = 0.13;
-
-        rotationXX_ON = 0;
-        rotationXX_DIR = 1;
-        rotationXX_SPEED = 1;
-
-        rotationYY_ON = 0;
-        rotationYY_DIR = 1;
-        rotationYY_SPEED = 1;
-
-        rotationZZ_ON = 0;
-        rotationZZ_DIR = 1;
-        rotationZZ_SPEED = 1;
+    document.getElementById("reset-view-button").onclick = function(){
+        resetView();
     };
 
     document.getElementById("scale-up-button").onclick = function() {

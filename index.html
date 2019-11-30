@@ -93,15 +93,15 @@
 
 <body onload="runWebGL();">
 
-    <nav class="navbar navbar-expand-lg" style="background-color: #2780E3; text">
-
-        <a class="navbar-brand mx-auto" style="color: white" href="#">Draughts Game</a>
-
+    <nav class="navbar navbar-expand-lg" style="background-color: rgb(205,133,63);">
+        <a class="navbar-brand mx-auto" style="color: white" ><img class="mx-auto mb-1" src="Utils/css/favicon-32x32.png" alt="" width="32" height="32"> Draughts Game <img class="mx-auto mb-1" src="Utils/css/favicon-32x32.png" alt="" width="32" height="32">
+        </a>
       </nav>
 
     <div style="">
-        <br>
-
+        <div class="py-4 text-center">
+            <h4>Welcome to Draughts Game!</h4>
+        </div>
         <div class="container">
             <div class="row">
                 <div class="col">
@@ -109,64 +109,31 @@
                 </div>
                 <div class="col-3">
                     <!-- ################################################### -->
-                    <h4>General</h4>
-                    <p>
-                        <button class="btn btn-danger btn-sm" id="reset-button">Reset</button>
-                    </p>
+                    <h4>Game Info</h4>
+                    <p> Playing : <a id="current-team"></a></p>
+                    <p> Score : <a id="team1-score"></a> - <a id="team2-score"></a></p>
+                    <p> FPS : <a id="fps"></a></p>
+                    <p><button class="btn btn-danger btn-sm" id="reset-button">Restart Game</button>
+                        <button class="btn btn-warning btn-sm" id="reset-view-button">Restart View</button></p>
 
+                    <h4>Visualization Options</h4>
                     <h5>Move</h5>
                     <p>
-                        <button class="btn btn-info btn-sm" id="move-left-button">Left</button>
-                        <button class="btn btn-info btn-sm" id="move-right-button">Right</button>
-                        <button class="btn btn-info btn-sm" id="move-up-button">Up</button>
-                        <button class="btn btn-info btn-sm" id="move-down-button">Down</button>
+                        <button class="btn btn-info btn-sm" id="move-left-button">&larr;</button>
+                        <button class="btn btn-info btn-sm" id="move-right-button">&rarr;</button>
+                        <button class="btn btn-info btn-sm" id="move-up-button">&uarr;</button>
+                        <button class="btn btn-info btn-sm" id="move-down-button">&darr;</button>
                         <button class="btn btn-info btn-sm" id="move-front-button">Front</button>
                         <button class="btn btn-info btn-sm" id="move-back-button">Back</button>
                     </p>
 
                     <h5>Scale</h5>
                     <p>
-                        <button class="btn btn-info btn-sm" id="scale-up-button">Scale Up</button>
-                        <button class="btn btn-info btn-sm" id="scale-down-button">Scale Down</button>
+                        <button class="btn btn-info btn-sm" id="scale-up-button">+</button>
+                        <button class="btn btn-info btn-sm" id="scale-down-button">-</button>
                     </p>
 
-                    <h5>Rotate</h5>
 
-                    <h6>XX</h6>
-                    <p>
-                        <button class="btn btn-danger btn-sm" id="XX-on-off-button">On / Off</button>
-                        <button class="btn btn-dark btn-sm" id="XX-direction-button">Change Direction</button>
-                        <button class="btn btn-dark btn-sm" id="XX-slower-button">Slower</button>
-                        <button class="btn btn-dark btn-sm" id="XX-faster-button">Faster</button>
-                    </p>
-
-                    <h6>YY</h6>
-                    <p>
-                        <button class="btn btn-danger btn-sm" id="YY-on-off-button">On / Off</button>
-
-                        <button class="btn btn-dark btn-sm" id="YY-direction-button">Change Direction</button>
-
-                        <button class="btn btn-dark btn-sm" id="YY-slower-button">Slower</button>
-
-                        <button class="btn btn-dark btn-sm" id="YY-faster-button">Faster</button>
-
-                    </p>
-
-                    <h6>ZZ</h6>
-                    <p>
-
-                        <button class="btn btn-danger btn-sm" id="ZZ-on-off-button">On / Off</button>
-
-                        <button class="btn btn-dark btn-sm" id="ZZ-direction-button">Change Direction</button>
-
-                        <button class="btn btn-dark btn-sm" id="ZZ-slower-button">Slower</button>
-
-                        <button class="btn btn-dark btn-sm" id="ZZ-faster-button">Faster</button>
-                    </p>
-                </div>
-                
-                <!-- ################################################### -->
-                <div class="col">
                     <div hidden>
                         <h4>Pieces</h4>
                         <h5>Texture</h5>
@@ -186,40 +153,59 @@
                         </p>
                     </div>
 
-                    <div>
-                        <h4>Help</h4>
-                        <ul>
-                            <li>Select the position of piece you want to play with using arrow keys &larr; &rarr; &uarr; &darr;</li>
-                            <li>Press space to select the piece.</li>
-                            <li>The position of the selected piece will change color and you can now select the new position using the same keys as before.</li>
-                            <li>Move the piece by pressing space again.</li>
-                            <li>At any moment you can cancel a move by pressing ESC.</li>
-                        </ul>
+                    <h5>Rendering Mode</h5>
+                    <p>
+                        <select class="custom-select" id="rendering-mode-selection">
+                            <option value="0">Filled Triangles</option>
+                            <option value="1">Wireframe</option>
+                            <option value="2">Vertices</option>
+                        </select>
+                    </p>
 
-                        <h4>Current Team</h4>
-                        <p id="current-team"></p>
+                    <h5>Projection type</h5>
+                    <p>
+                        <select class="custom-select" id="projection-selection">
+                            <option value="0">Orthogonal Projection</option>
+                            <option value="1" selected>Perspective Projection</option>
+                        </select>
+                    </p>
+                </div>
+                
+                <!-- ################################################### -->
+                <div class="col">
+                    <h4>Other Options</h4>
+                    <h5>Rotate</h5>
 
-                        <h4>FPS</h4>
-                        <p id="fps"></p>
+                    <h6>XX</h6>
+                    <p>
+                        <button class="btn btn-danger btn-sm" id="XX-on-off-button">On / Off</button>
+                        <button class="btn btn-info btn-sm" id="XX-direction-button">Change Direction</button>
+                    </p>
+                    <p>
+                        <button class="btn btn-info btn-sm" id="XX-slower-button">Slower</button>
+                        <button class="btn btn-info btn-sm" id="XX-faster-button">Faster</button>
+                    </p>
 
-                        <h4>Settings</h4>
+                    <h6>YY</h6>
+                    <p>
+                        <button class="btn btn-danger btn-sm" id="YY-on-off-button">On / Off</button>
+                        <button class="btn btn-info btn-sm" id="YY-direction-button">Change Direction</button>
+                    </p>
+                    <p>
+                        <button class="btn btn-info btn-sm" id="YY-slower-button">Slower</button>
+                        <button class="btn btn-info btn-sm" id="YY-faster-button">Faster</button>
 
-                        <h5>Rendering Mode</h5>
-                        <p>
-                            <select class="custom-select" id="rendering-mode-selection">
-                                <option value="0">Filled Triangles</option>
-                                <option value="1">Wireframe</option>
-                                <option value="2">Vertices</option>
-                            </select>
-                        </p>
+                    </p>
 
-                        <h5>Projection type</h5>
-                        <p>
-                            <select class="custom-select" id="projection-selection">
-                                <option value="0">Orthogonal Projection</option>
-                                <option value="1" selected>Perspective Projection</option>
-                            </select>
-                        </p>
+                    <h6>ZZ</h6>
+                    <p>
+                        <button class="btn btn-danger btn-sm" id="ZZ-on-off-button">On / Off</button>
+                        <button class="btn btn-info btn-sm" id="ZZ-direction-button">Change Direction</button>
+                    </p>
+                    <p>
+                        <button class="btn btn-info btn-sm" id="ZZ-slower-button">Slower</button>
+                        <button class="btn btn-info btn-sm" id="ZZ-faster-button">Faster</button>
+                    </p>
                     </div>
                 </div> 
                 </div>
@@ -227,7 +213,15 @@
           </div>
     </div>
 
-    <footer style="text-align: center">&copy; Paulo, Pedro 2019</footer>
+    <div class="py-5 text-center">
+        <h4>Help</h4>
+        <p class="lead">Select the position of piece you want to play with using arrow keys &larr; &rarr; &uarr; &darr; and press space to select the piece.<br>
+            The position of the selected piece will change color and you can now select the new position using the same keys as before.<br>Move the piece by pressing space again.<br>
+            At any moment you can cancel a move by pressing ESC.
+            <footer style="text-align: center">&copy; Paulo, Pedro 2019</footer>
+        </p>
+    </div>
+
 </body>
 
 </html>

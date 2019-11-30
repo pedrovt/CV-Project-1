@@ -48,9 +48,9 @@ var angleYY = 0.0;
 var angleZZ = 0.0;
 
 // The scaling factors
-var sx = 0.13;
-var sy = 0.13;
-var sz = 0.13;
+var sx = 0.117;
+var sy = 0.117;
+var sz = 0.117;
 
 // Animation controls
 var rotationXX_ON = 0;
@@ -68,6 +68,66 @@ var rotationZZ_SPEED = 1;
 var primitiveType = null;	// To allow choosing the way of drawing the model triangles
 var projectionType = 1;		// To allow choosing the projection type
 
+function resetView() {
+	// The initial values
+	tx = 0.0;
+	ty = 0.0;
+	tz = 0.0;
+
+	angleXX = 40;
+	angleYY = 0.0;
+	angleZZ = 0.0;
+
+	sx = 0.117;
+	sy = 0.117;
+	sz = 0.117;
+
+	rotationXX_ON = 0;
+	rotationXX_DIR = 1;
+	rotationXX_SPEED = 1;
+
+	rotationYY_ON = 0;
+	rotationYY_DIR = 1;
+	rotationYY_SPEED = 1;
+
+	rotationZZ_ON = 0;
+	rotationZZ_DIR = 1;
+	rotationZZ_SPEED = 1;
+
+	projectionType = 1;		// To allow choosing the projection type
+}
+
+function resetGame() {
+	console.log("Reset game");
+
+	gl = null;
+	shaderProgram = null;
+
+	board	 = new Board();
+	slots 	 = board.getSlots();
+	draughts = board.getDraughts();
+
+	boardVertexPositionBuffer = null;		// Board
+	boardVertexIndexBuffer = null;
+	boardVertexColorBuffer = null;
+	boardVertexNormalBuffer = null;
+
+	slotsVertexPositionBuffer = [];			// Slots
+	slotsVertexIndexBuffer =  [];
+	slotsVertexColorBuffer = [];
+
+	draughtsVertexPositionBuffer = [];		// Draughts
+	draughtsVertexIndexBuffer = [];
+	draughtsVertexColorBuffer = [];
+
+	resetView();
+
+	var canvas = document.getElementById("my-canvas");
+	initWebGL( canvas );
+	shaderProgram = initShaders( gl );
+	setEventListeners( canvas );
+	initBuffers();
+}
 //----------------------------------------------------------------------------
 // User Interaction
 
@@ -77,10 +137,15 @@ function outputInfos() {
 
 	// Current team
 	if (board.currentTeam) {
-		document.getElementById('current-team').innerHTML = "Team 1 (Black Slots)";
+		document.getElementById('current-team').innerHTML = "Team 1";
 	}
 	else {
-		document.getElementById('current-team').innerHTML = "Team 2 (White Slots)";
+		document.getElementById('current-team').innerHTML = "Team 2";
+	}
+
+	if (board.getGameOver()) {
+		alert("Game Over! Congratulations to team " + board.getWinningTeam());
+		resetGame();
 	}
 }
 
